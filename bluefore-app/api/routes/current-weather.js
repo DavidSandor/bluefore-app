@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const environment = require('../utility/environment');
+const CurrentWeather = require('../models/current-weather.model');
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/api/current-weather/:lat/:lon', async (req, res, next) => {
     const language = req.query.lang;
 
     const currentWeather = (await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=${language}&appid=${environment.WEATHER_API_KEY}`)).data;
-    res.json(currentWeather);
+    res.json(new CurrentWeather(currentWeather));
 });
 
 router.get('/api/current-weather/:loc', async (req, res, next) => {
@@ -24,7 +25,7 @@ router.get('/api/current-weather/:loc', async (req, res, next) => {
     const language = req.query.lang;
 
     const currentWeather = (await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&lang=${language}&appid=${environment.WEATHER_API_KEY}`)).data;
-    res.json(currentWeather);
+    res.json(new CurrentWeather(currentWeather));
 });
 
 module.exports = router;
