@@ -30,10 +30,10 @@ const getCurrentWeatherResponse = async (args) => {
     try {
         const currentWeather = (
             await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${args.location || ''}&lat=${args.latitude || ''}&lon=${args.longitude || ''}&units=metric&lang=${args.language || ''}&appid=${environment.WEATHER_API_KEY}`)
-            ).data; 
+            ).data;
 
         return Promise.resolve(new CurrentWeather(currentWeather));
-        
+
     } catch (error) {
         return {msg: 'Request failed!'};
     }

@@ -9,7 +9,10 @@ class CurrentWeather {
     maxTemperature;
     pressure;
     humidity;
-    isNight;
+    calcDateTime;
+    sunrise;
+    sunset;
+    timezone;
 
     constructor(currentWeatherData) {
         this.location = currentWeatherData.name;
@@ -21,8 +24,11 @@ class CurrentWeather {
         this.maxTemperature = currentWeatherData.main.temp_max;
         this.pressure = currentWeatherData.main.pressure;
         this.humidity = currentWeatherData.main.humidity;
-        // TODO: Correction needed for timezones
-        this.isNight = currentWeatherData.dt > currentWeatherData.sys.sunset || currentWeatherData.dt < currentWeatherData.sys.sunrise
+        // Converted to ms
+        this.calcDateTime = currentWeatherData.dt * 1000;
+        this.sunrise = currentWeatherData.sys.sunrise* 1000;
+        this.sunset = currentWeatherData.sys.sunset * 1000;
+        this.timezone = currentWeatherData.timezone * 1000;
     }
 }
 
