@@ -13,6 +13,7 @@ class CurrentWeather {
     sunrise;
     sunset;
     timezone;
+    coordinates;
 
     constructor(currentWeatherData) {
         this.location = currentWeatherData.name;
@@ -24,6 +25,7 @@ class CurrentWeather {
         this.maxTemperature = currentWeatherData.main.temp_max;
         this.pressure = currentWeatherData.main.pressure;
         this.humidity = currentWeatherData.main.humidity;
+        this.coordinates = currentWeatherData.coord;
         // Converted to ms
         this.calcDateTime = currentWeatherData.dt * 1000;
         this.sunrise = currentWeatherData.sys.sunrise* 1000;
