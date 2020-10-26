@@ -9,6 +9,7 @@
 // @ is an alias to /src
 import currentWeather from '@/components/CurrentWeather.vue'
 import REQUESTS from '@/connection/requests';
+import GEOLOCATION from '@/geolocation/geolocation';
 
 export default {
   name: 'Home',
@@ -17,12 +18,13 @@ export default {
   },
   data() {
     return {
-      location: 'Budapest',
-      language: 'en'
+      location: '',
+      language: ''
     }
   },
   created() {
     REQUESTS.updateCurrentWeather({location: this.location, language: this.language});
+    GEOLOCATION.updateLocation();
   },
   watch: {
     location() {
