@@ -20,17 +20,13 @@
 
 <script>
 
-import axios from 'axios';
+import DATE_HELPER from '@/utility/date-helper';
+import { mapGetters } from 'vuex';
 
 export default {
-    props: [
-        'location',
-        'language'
-    ],
     data() {
         return {
             isWeatherLoaded: false,
-            currentWeather: '',
             localDay: '',
             localDate: '',
             localTime: '',
@@ -40,24 +36,20 @@ export default {
         }
     },
     methods: {
-        async updateCurrentWeather() {
-            this.currentWeather = (await axios.get(`api/current-weather/${this.location}?lang=${this.language}`)).data;
-
+        updateCurrentWeatherData() {
             if(this.timerInterval) {
                 clearInterval(this.timerInterval);
             }
 
             if(this.currentWeather?.location) {
-                this.isWeatherLoaded = true;
-
-                this.sunrise = this.convertToHourFormat(new Date(this.currentWeather.sunrise + this.currentWeather.timezone));
-                this.sunset = this.convertToHourFormat(new Date(this.currentWeather.sunset + this.currentWeather.timezone));
+                this.sunrise = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunrise + this.currentWeather.timezone));
+                this.sunset = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunset + this.currentWeather.timezone));
 
                 const setLocalDateTime = () => {
                     const date = new Date(Date.now() + this.currentWeather.timezone);
-                    this.localDay = this.getWeekday(date.getUTCDay());
+                    this.localDay = DATE_HELPER.getWeekday(date.getUTCDay());
                     this.localDate = `${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`;
-                    this.localTime = this.convertToHourFormat(date);
+                    this.localTime = DATE_HELPER.convertToHourFormat(date);
                 }
 
                 setLocalDateTime();
@@ -66,34 +58,21 @@ export default {
                     setLocalDateTime();
                 }, 1000);
 
+                this.isWeatherLoaded = true;
             } else {
                 this.isWeatherLoaded = false;
             }
-        },
-        getWeekday(index) {
-            const days = [
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday'
-            ]
-
-            return days[index-1];
-        },
-        convertToHourFormat(date) {
-            return `${date.getUTCHours() > 10 ? date.getUTCHours() : '0' + date.getUTCHours()} : ${date.getUTCMinutes() > 10 ? date.getUTCMinutes() : '0' + date.getUTCMinutes()}`;
         }
-    },
-    created() {
-        this.updateCurrentWeather();
     },
     watch: {
-        location() {
-            this.updateCurrentWeather();
+        currentWeather() {
+            this.updateCurrentWeatherData();
         }
+    },
+    computed: {
+    ...mapGetters([
+        'currentWeather'
+        ]),
     }
 }
 </script>

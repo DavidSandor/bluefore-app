@@ -1,13 +1,14 @@
 <template>
   <div>
     <input v-model.lazy="location" type="text">
-    <current-weather class="current-weather" :location="location" :language="language"></current-weather>
+    <current-weather class="current-weather"></current-weather>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import currentWeather from '@/components/CurrentWeather.vue'
+import REQUESTS from '@/connection/requests';
 
 export default {
   name: 'Home',
@@ -18,6 +19,14 @@ export default {
     return {
       location: 'Budapest',
       language: 'en'
+    }
+  },
+  created() {
+    REQUESTS.updateCurrentWeather({location: this.location, language: this.language});
+  },
+  watch: {
+    location() {
+      REQUESTS.updateCurrentWeather({location: this.location, language: this.language});
     }
   }
 }
