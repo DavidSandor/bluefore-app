@@ -2,11 +2,18 @@ import REQUESTS from '@/connection/requests';
 
 export default {
     updateLocation() {
+        const onDisabledGeolocation = () => {
+            REQUESTS.updateCurrentWeather({location: 'Budapest'});
+        }
+
         navigator.permissions.query({name:'geolocation'}).then(result => {
+            if(result.state !== 'granted') {
+                onDisabledGeolocation();
+            }
+
             result.onchange = function() {
                 if(result.state !== 'granted') {
-                    REQUESTS.updateCurrentWeather({location: 'Budapest'});
-                    console.log('Geolocation is disabled by user.');
+                    onDisabledGeolocation();
                 }
               }
         })
@@ -19,11 +26,10 @@ export default {
                         longitude: position.coords.longitude
                     }
                 );
-                console.log('Geolocation is enabled by user.');
             });
-            
+
         } else {
-            REQUESTS.updateCurrentWeather({location: 'Budapest'});
+            onDisabledGeolocation();
             console.log('Geolocation is not supported by this browser.');
         }
     }

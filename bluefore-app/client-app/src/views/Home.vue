@@ -23,7 +23,6 @@ export default {
     }
   },
   created() {
-    REQUESTS.updateCurrentWeather({location: this.location, language: this.language});
     GEOLOCATION.updateLocation();
   },
   watch: {
