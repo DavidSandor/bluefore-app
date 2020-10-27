@@ -17,7 +17,7 @@ class CurrentWeather {
 
     constructor(currentWeatherData) {
         this.location = currentWeatherData.name;
-        this.iconId = currentWeatherData.weather[0].id;
+        this.iconId = currentWeatherData.weather[0].icon;
         this.description = currentWeatherData.weather[0].description;
         this.temperature = currentWeatherData.main.temp;
         this.feelsLike = currentWeatherData.main.feels_like;
