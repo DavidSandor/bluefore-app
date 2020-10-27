@@ -6,8 +6,8 @@
             <p>{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
             <p>{{forecast.description}}</p>
             <i class="fd-icon" :class="`owi owi-${forecast.iconId}`"></i>
-            <p>{{forecast.temperature.min}}</p>
-            <p>{{forecast.temperature.max}}</p>
+            <p>{{toDegreeFormat(forecast.temperature.min)}}</p>
+            <p>{{toDegreeFormat(forecast.temperature.max)}}</p>
         </div>
     </div>
     </div>
@@ -16,6 +16,7 @@
 <script>
 
 import DATE_HELPER from '@/utility/date-helper';
+import WEATHER_HELPER from '@/utility/weather-helper';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -27,6 +28,9 @@ export default {
     methods: {
         convertDay(date) {
             return DATE_HELPER.getWeekday((new Date(date)).getUTCDay());
+        },
+        toDegreeFormat(value) {
+            return WEATHER_HELPER.toDegreeFormat(value);
         }
     }
 }

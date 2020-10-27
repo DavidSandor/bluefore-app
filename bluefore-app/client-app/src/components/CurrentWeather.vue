@@ -7,12 +7,12 @@
             <p>{{localDate}}</p>
             <p>{{localTime}}</p>
             <p>{{currentWeather.description}}</p>
-            <p>{{currentWeather.temperature}}</p>
+            <p>{{toDegreeFormat(currentWeather.temperature)}}</p>
             <i class="cw-icon" :class="`owi owi-${currentWeather.iconId}`"></i>
             <p>{{sunrise}}</p>
             <p>{{sunset}}</p>
-            <p>{{currentWeather.minTemperature}}</p>
-            <p>{{currentWeather.maxTemperature}}</p>
+            <p>{{toDegreeFormat(currentWeather.minTemperature)}}</p>
+            <p>{{toDegreeFormat(currentWeather.maxTemperature)}}</p>
         </template>
         <template v-else>
             <p>No content found!</p>
@@ -23,6 +23,8 @@
 <script>
 
 import DATE_HELPER from '@/utility/date-helper';
+import WEATHER_HELPER from '@/utility/weather-helper';
+
 import { mapGetters } from 'vuex';
 
 export default {
@@ -64,6 +66,9 @@ export default {
             } else {
                 this.isWeatherLoaded = false;
             }
+        },
+        toDegreeFormat(value) {
+            return WEATHER_HELPER.toDegreeFormat(value);
         }
     },
     watch: {

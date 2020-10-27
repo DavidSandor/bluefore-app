@@ -7,7 +7,7 @@
                 <p>{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
                 <p>{{forecast.description}}</p>
                 <i class="fh-icon" :class="`owi owi-${forecast.iconId}`"></i>
-                <p>{{forecast.temperature}}</p>
+                <p>{{toDegreeFormat(forecast.temperature)}}</p>
             </div>
         </div>
     </div>
@@ -16,6 +16,7 @@
 <script>
 
 import DATE_HELPER from '@/utility/date-helper';
+import WEATHER_HELPER from '@/utility/weather-helper';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -30,6 +31,9 @@ export default {
         },
         convertToday(date) {
             return (new Date(date)).getUTCDate() > (new Date().getUTCDate()) ? 'Tomorrow' : 'Today';
+        },
+        toDegreeFormat(value) {
+            return WEATHER_HELPER.toDegreeFormat(value);
         }
     }
 }
