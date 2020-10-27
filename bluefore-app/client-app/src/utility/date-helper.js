@@ -13,6 +13,9 @@ export default {
         return days[index-1];
     },
     convertToHourFormat(date) {
-        return `${date.getUTCHours() > 10 ? date.getUTCHours() : '0' + date.getUTCHours()} : ${date.getUTCMinutes() > 10 ? date.getUTCMinutes() : '0' + date.getUTCMinutes()}`;
+        return `${date.getUTCHours() > 9 ? date.getUTCHours() : '0' + date.getUTCHours()} : ${date.getUTCMinutes() > 9 ? date.getUTCMinutes() : '0' + date.getUTCMinutes()}`;
+    },
+    convertToDateFormat(date) {
+        return `${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`;
     }
 }

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h2>Current Weather</h2>
         <template v-if="isWeatherLoaded">
             <p>{{currentWeather.location}}</p>
             <p>{{localDay}}</p>
@@ -7,6 +8,7 @@
             <p>{{localTime}}</p>
             <p>{{currentWeather.description}}</p>
             <p>{{currentWeather.temperature}}</p>
+            <p>{{currentWeather.iconId}}</p>
             <p>{{sunrise}}</p>
             <p>{{sunset}}</p>
             <p>{{currentWeather.minTemperature}}</p>
@@ -48,7 +50,7 @@ export default {
                 const setLocalDateTime = () => {
                     const date = new Date(Date.now() + this.currentWeather.timezone);
                     this.localDay = DATE_HELPER.getWeekday(date.getUTCDay());
-                    this.localDate = `${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`;
+                    this.localDate = DATE_HELPER.convertToDateFormat(date);
                     this.localTime = DATE_HELPER.convertToHourFormat(date);
                 }
 
