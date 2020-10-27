@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .cw-icon {
     font-size: 70px;
 }
