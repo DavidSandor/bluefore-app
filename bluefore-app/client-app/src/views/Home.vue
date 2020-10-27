@@ -3,13 +3,14 @@
     <input v-model.lazy="location" type="text">
     <current-weather class="current-weather"></current-weather>
     <forecast-hourly class="forecast-hourly"></forecast-hourly>
+    <forecast-daily class="forecast-daily"></forecast-daily>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import currentWeather from '@/components/CurrentWeather.vue';
 import forecastHourly from '@/components/ForecastHourly.vue';
+import forecastDaily from '@/components/ForecastDaily.vue';
 import REQUESTS from '@/connection/requests';
 import GEOLOCATION from '@/geolocation/geolocation';
 
@@ -17,7 +18,8 @@ export default {
   name: 'Home',
   components: {
     currentWeather,
-    forecastHourly
+    forecastHourly,
+    forecastDaily
   },
   data() {
     return {
@@ -42,6 +44,10 @@ export default {
 }
 
 .forecast-hourly {
+  border: 1px solid gray;
+}
+
+.forecast-daily {
   border: 1px solid gray;
 }
 </style>
