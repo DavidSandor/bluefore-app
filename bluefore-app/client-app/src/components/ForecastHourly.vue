@@ -6,7 +6,7 @@
                 <p>{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
                 <p>{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
                 <p>{{forecast.description}}</p>
-                <p>{{forecast.iconId}}</p>
+                <i class="fh-icon" :class="`owi owi-${forecast.iconId}`"></i>
                 <p>{{forecast.temperature}}</p>
             </div>
         </div>
@@ -44,5 +44,9 @@ export default {
 .forecast {
     border: 1px dashed green;
     margin: 5px;
+}
+
+.fh-icon {
+    font-size: 40px;
 }
 </style>

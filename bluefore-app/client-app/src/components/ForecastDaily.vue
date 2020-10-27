@@ -5,7 +5,7 @@
         <div class="forecast" v-for="forecast in forecastDaily" :key="forecast.dateTime">
             <p>{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
             <p>{{forecast.description}}</p>
-            <p>{{forecast.iconId}}</p>
+            <i class="fd-icon" :class="`owi owi-${forecast.iconId}`"></i>
             <p>{{forecast.temperature.min}}</p>
             <p>{{forecast.temperature.max}}</p>
         </div>
@@ -41,5 +41,9 @@ export default {
 .forecast {
     border: 1px dashed green;
     margin: 5px;
+}
+
+.fd-icon {
+    font-size: 40px;
 }
 </style>

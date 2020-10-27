@@ -8,7 +8,7 @@
             <p>{{localTime}}</p>
             <p>{{currentWeather.description}}</p>
             <p>{{currentWeather.temperature}}</p>
-            <p>{{currentWeather.iconId}}</p>
+            <i class="cw-icon" :class="`owi owi-${currentWeather.iconId}`"></i>
             <p>{{sunrise}}</p>
             <p>{{sunset}}</p>
             <p>{{currentWeather.minTemperature}}</p>
@@ -80,6 +80,7 @@ export default {
 </script>
 
 <style>
-
-
+.cw-icon {
+    font-size: 70px;
+}
 </style>
