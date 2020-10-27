@@ -4,7 +4,9 @@ export default createStore({
   state: {
     location: '',
     coordinates: '',
-    currentWeather: ''
+    currentWeather: '',
+    forecastHourly: '',
+    forecastDaily: ''
   },
   getters: {
     location(state) {
@@ -15,6 +17,12 @@ export default createStore({
     },
     currentWeather(state) {
       return state.currentWeather;
+    },
+    forecastHourly(state) {
+      return state.forecastHourly;
+    },
+    forecastDaily(state) {
+      return state.forecastDaily;
     }
   },
   mutations: {
@@ -22,6 +30,12 @@ export default createStore({
       state.currentWeather = {...currentWeather};
       state.location = currentWeather.location;
       state.coordinates = {...currentWeather.coordinates};
+    },
+    setForecastHourly(state, forecastHourly) {
+      state.forecastHourly = {...forecastHourly};
+    },
+    setForecastDaily(state, forecastDaily) {
+      state.forecastDaily = {...forecastDaily};
     }
   },
   actions: {

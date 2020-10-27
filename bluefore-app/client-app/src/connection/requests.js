@@ -13,5 +13,11 @@ export default {
         }
 
         store.commit('setCurrentWeather', currentWeather);
+
+        // Updating forecast after current weather
+        const forecastWeather = (await axios.get(`api/forecast-weather/${store.getters.coordinates.lat}/${store.getters.coordinates.lon}?lang=${params.language}`)).data;
+
+        store.commit('setForecastHourly', forecastWeather.forecastHourly);
+        store.commit('setForecastDaily', forecastWeather.forecastDaily);
     }
 }
