@@ -3,7 +3,7 @@ import REQUESTS from '@/connection/requests';
 export default {
     updateLocation() {
         const onDisabledGeolocation = () => {
-            REQUESTS.updateCurrentWeather({location: 'Budapest'});
+            REQUESTS.updateWeatherData({location: 'Budapest'});
         }
 
         navigator.permissions.query({name:'geolocation'}).then(result => {
@@ -20,7 +20,7 @@ export default {
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                REQUESTS.updateCurrentWeather(
+                REQUESTS.updateWeatherData(
                     {
                         latitude: position.coords.latitude, 
                         longitude: position.coords.longitude

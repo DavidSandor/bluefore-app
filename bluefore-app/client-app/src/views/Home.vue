@@ -1,6 +1,15 @@
 <template>
   <div>
-    <input v-model.lazy="location" type="text">
+    <input v-model.lazy="chosenLocation" type="text">
+
+    <br>
+    <input type="radio" id="hun" value="hu" v-model="chosenLanguage">
+    <label for="hun">Hun</label>
+    <br>
+    <input type="radio" id="eng" value="en" v-model="chosenLanguage">
+    <label for="eng">Eng</label>
+    <br>
+
     <current-weather class="current-weather"></current-weather>
     <forecast-hourly class="forecast-hourly"></forecast-hourly>
     <forecast-daily class="forecast-daily"></forecast-daily>
@@ -25,19 +34,25 @@ export default {
   },
   data() {
     return {
-      location: ''
+      chosenLocation: '',
+      chosenLanguage: 'en'
     }
   },
   created() {
     GEOLOCATION.updateLocation();
   },
   watch: {
-    location() {
-      REQUESTS.updateCurrentWeather({location: this.location});
+    chosenLocation() {
+      REQUESTS.updateWeatherData({location: this.chosenLocation});
+    },
+    chosenLanguage() {
+      this.setLanguage(this.chosenLanguage);
+      REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
     }
   },
   computed: {
   ...mapGetters([
+        'coordinates',
         'currentWeather'
         ]),
   },
