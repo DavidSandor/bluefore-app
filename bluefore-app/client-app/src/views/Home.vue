@@ -14,6 +14,8 @@ import forecastDaily from '@/components/ForecastDaily.vue';
 import REQUESTS from '@/connection/requests';
 import GEOLOCATION from '@/geolocation/geolocation';
 
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   name: 'Home',
   components: {
@@ -23,8 +25,7 @@ export default {
   },
   data() {
     return {
-      location: '',
-      language: ''
+      location: ''
     }
   },
   created() {
@@ -32,8 +33,18 @@ export default {
   },
   watch: {
     location() {
-      REQUESTS.updateCurrentWeather({location: this.location, language: this.language});
+      REQUESTS.updateCurrentWeather({location: this.location});
     }
+  },
+  computed: {
+  ...mapGetters([
+        'currentWeather'
+        ]),
+  },
+  methods: {
+    ...mapMutations([
+        'setLanguage'
+        ]),
   }
 }
 </script>

@@ -6,7 +6,8 @@ export default createStore({
     coordinates: '',
     currentWeather: '',
     forecastHourly: '',
-    forecastDaily: ''
+    forecastDaily: '',
+    language: 'en'
   },
   getters: {
     location(state) {
@@ -23,7 +24,10 @@ export default createStore({
     },
     forecastDaily(state) {
       return state.forecastDaily;
-    }
+    },
+    language(state) {
+      return state.language;
+    },
   },
   mutations: {
     setCurrentWeather(state, currentWeather) {
@@ -36,6 +40,9 @@ export default createStore({
     },
     setForecastDaily(state, forecastDaily) {
       state.forecastDaily = {...forecastDaily};
+    },
+    setLanguage(state, language) {
+      state.language = language;
     }
   },
   actions: {
