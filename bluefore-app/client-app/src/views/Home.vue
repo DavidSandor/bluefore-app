@@ -2,12 +2,19 @@
   <div>
     <input v-model.lazy="chosenLocation" type="text">
 
-    <br>
+    <hr>
+
     <input type="radio" id="hun" value="hu" v-model="chosenLanguage">
     <label for="hun">Hun</label>
     <br>
     <input type="radio" id="eng" value="en" v-model="chosenLanguage">
     <label for="eng">Eng</label>
+    <br>
+
+    <hr>
+
+    <input v-model="isUseCurrentLocation" type="checkbox" :disabled="!currentLocationEnabled"> Use current location
+
     <br>
 
     <current-weather class="current-weather"></current-weather>
@@ -35,30 +42,44 @@ export default {
   data() {
     return {
       chosenLocation: '',
-      chosenLanguage: 'en'
+      chosenLanguage: 'en',
+      isUseCurrentLocation: true
     }
   },
   created() {
     GEOLOCATION.updateLocation();
   },
   watch: {
-    chosenLocation() {
-      REQUESTS.updateWeatherData({location: this.chosenLocation});
+    chosenLocation(val) {
+      if(val && val !== this.location) {
+        this.isUseCurrentLocation = false;
+        REQUESTS.updateWeatherData({location: this.chosenLocation});
+      }
     },
-    chosenLanguage() {
-      this.setLanguage(this.chosenLanguage);
+    chosenLanguage(val) {
+      this.setLanguage(val);
       REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
+    },
+    isUseCurrentLocation(val) {
+      this.setUseCurrentLocation(val);
+      if(val) {
+        this.chosenLocation = '';
+        GEOLOCATION.updateLocation();
+      }
     }
   },
   computed: {
   ...mapGetters([
+        'location',
         'coordinates',
-        'currentWeather'
+        'currentWeather',
+        'currentLocationEnabled'
         ]),
   },
   methods: {
     ...mapMutations([
-        'setLanguage'
+        'setLanguage',
+        'setUseCurrentLocation'
         ]),
   }
 }

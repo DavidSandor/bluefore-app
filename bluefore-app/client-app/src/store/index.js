@@ -7,7 +7,9 @@ export default createStore({
     currentWeather: '',
     forecastHourly: '',
     forecastDaily: '',
-    language: 'en'
+    language: 'en',
+    useCurrentLocation: true,
+    currentLocationEnabled: true
   },
   getters: {
     location(state) {
@@ -28,6 +30,12 @@ export default createStore({
     language(state) {
       return state.language;
     },
+    useCurrentLocation(state) {
+      return state.useCurrentLocation;
+    },
+    currentLocationEnabled(state) {
+      return state.currentLocationEnabled;
+    },
   },
   mutations: {
     setCurrentWeather(state, currentWeather) {
@@ -43,6 +51,12 @@ export default createStore({
     },
     setLanguage(state, language) {
       state.language = language;
+    },
+    setUseCurrentLocation(state, useCurrentLocation) {
+      state.useCurrentLocation = useCurrentLocation;
+    },
+    setCurrentLocationEnabled(state, currentLocationEnabled) {
+      state.currentLocationEnabled = currentLocationEnabled;
     }
   },
   actions: {

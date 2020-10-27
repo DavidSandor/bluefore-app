@@ -8,7 +8,7 @@ export default {
 
         if(params.location) {
             currentWeather = (await axios.get(`api/current-weather/${params.location}?lang=${store.getters.language}`)).data;
-        } else if(params.latitude && params.longitude) {
+        } else if(params.latitude !== undefined && params.longitude !== undefined) {
             currentWeather = (await axios.get(`api/current-weather/${params.latitude}/${params.longitude}?lang=${store.getters.language}`)).data;
         }
 
