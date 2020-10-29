@@ -13,6 +13,10 @@
         </div>
       </div>
     </div>
+    <div id="language-panel">
+      <img v-if="language !== 'hu'" @click="() => setLanguage('hu')" src="./assets/icons/hungary.svg" />
+      <img v-if="language !== 'en'" @click="() => setLanguage('en')" src="./assets/icons/uk.svg" />
+    </div>
     <router-view/>
   </div>
 </template>
@@ -27,7 +31,6 @@ export default {
   data() {
     return {
       chosenLocation: '',
-      chosenLanguage: 'en',
       isUseCurrentLocation: true
     }
   },
@@ -41,6 +44,9 @@ export default {
         REQUESTS.updateWeatherData({location: this.chosenLocation});
       }
     },
+    language(val) {
+      REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
+    },
     isUseCurrentLocation(val) {
       this.setUseCurrentLocation(val);
       if(val) {
@@ -52,6 +58,7 @@ export default {
   computed: {
   ...mapGetters([
         'location',
+        'language',
         'coordinates',
         'currentWeather',
         'currentLocationEnabled'
@@ -61,7 +68,7 @@ export default {
     ...mapMutations([
         'setLanguage',
         'setUseCurrentLocation'
-        ]),
+        ])
   }
 }
 </script>
@@ -76,6 +83,22 @@ body {
    font-family: Avenir, Helvetica, Arial, sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+}
+
+#language-panel {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+
+  img {
+    width: 34px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+    cursor: pointer;
+  }
 }
 
 #nav {

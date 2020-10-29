@@ -110,6 +110,7 @@ export default {
 #home-panel {
   max-width: 1020px;
   margin: 0 auto;
+  position: relative;
 
   #date-time-panel {
     display: flex;

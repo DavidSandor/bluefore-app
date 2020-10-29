@@ -92,6 +92,7 @@ export default {
 <style scoped lang="scss">
 .daily-weather-panel {
     margin: 50px 0;
+    margin-bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
