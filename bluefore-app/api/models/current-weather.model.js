@@ -9,6 +9,7 @@ class CurrentWeather {
     maxTemperature;
     pressure;
     humidity;
+    wind;
     calcDateTime;
     sunrise;
     sunset;
@@ -25,6 +26,7 @@ class CurrentWeather {
         this.maxTemperature = currentWeatherData.main.temp_max;
         this.pressure = currentWeatherData.main.pressure;
         this.humidity = currentWeatherData.main.humidity;
+        this.wind = currentWeatherData.wind;
         this.coordinates = currentWeatherData.coord;
         // Converted to ms
         this.calcDateTime = currentWeatherData.dt * 1000;
