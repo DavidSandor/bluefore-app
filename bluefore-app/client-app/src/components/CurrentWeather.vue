@@ -1,79 +1,37 @@
 <template>
-    <div>
-        <h2>Current Weather</h2>
-        <template v-if="isWeatherLoaded">
-            <p>{{currentWeather.location}}</p>
-            <p>{{localDay}}</p>
-            <p>{{localDate}}</p>
-            <p>{{localTime}}</p>
-            <p>{{currentWeather.description}}</p>
-            <p>{{toDegreeFormat(currentWeather.temperature)}}</p>
+    <div id="current-weather-panel">
+        <div id="current-weather-main">
+            <p class="cw-location">{{currentWeather.location}}</p>
             <i class="cw-icon" :class="`owi owi-${currentWeather.iconId}`"></i>
-            <p>{{sunrise}}</p>
-            <p>{{sunset}}</p>
-            <p>{{toDegreeFormat(currentWeather.minTemperature)}}</p>
-            <p>{{toDegreeFormat(currentWeather.maxTemperature)}}</p>
-        </template>
-        <template v-else>
-            <p>No content found!</p>
-        </template>
+            <p class="cw-temperature">{{toDegreeFormat(currentWeather.temperature)}}</p>
+            <p class="cw-description">{{currentWeather.description}}</p>
+        </div>
+
+        <div id="current-weather-details">
+            <p><span>max</span>{{toDegreeFormat(currentWeather.maxTemperature)}}</p>
+            <p><span>humidity</span>{{currentWeather.humidity}}%</p>
+            <p><span>min</span>{{toDegreeFormat(currentWeather.minTemperature)}}</p>
+            <p><span>wind</span>{{toWindDirection(currentWeather.wind?.deg)}} {{toWindSpeed(currentWeather.wind?.speed)}} km/h</p>
+        </div>
     </div>
 </template>
 
 <script>
 
-import DATE_HELPER from '@/utility/date-helper';
 import WEATHER_HELPER from '@/utility/weather-helper';
 
 import { mapGetters } from 'vuex';
 
 export default {
-    data() {
-        return {
-            isWeatherLoaded: false,
-            localDay: '',
-            localDate: '',
-            localTime: '',
-            timerInterval: '',
-            sunrise: '',
-            sunset: ''
-        }
-    },
     methods: {
-        updateCurrentWeatherData() {
-            if(this.timerInterval) {
-                clearInterval(this.timerInterval);
-            }
-
-            if(this.currentWeather?.location) {
-                this.sunrise = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunrise + this.currentWeather.timezone));
-                this.sunset = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunset + this.currentWeather.timezone));
-
-                const setLocalDateTime = () => {
-                    const date = new Date(Date.now() + this.currentWeather.timezone);
-                    this.localDay = DATE_HELPER.getWeekday(date.getUTCDay());
-                    this.localDate = DATE_HELPER.convertToDateFormat(date);
-                    this.localTime = DATE_HELPER.convertToHourFormat(date);
-                }
-
-                setLocalDateTime();
-
-                this.timerInterval = setInterval(() => {
-                    setLocalDateTime();
-                }, 1000);
-
-                this.isWeatherLoaded = true;
-            } else {
-                this.isWeatherLoaded = false;
-            }
-        },
         toDegreeFormat(value) {
             return WEATHER_HELPER.toDegreeFormat(value);
-        }
-    },
-    watch: {
-        currentWeather() {
-            this.updateCurrentWeatherData();
+        },
+        toWindDirection(value) {
+            return WEATHER_HELPER.convertWindDeg(value);
+        },
+        toWindSpeed(value) {
+            return WEATHER_HELPER.convertWindSpeed(value);
         }
     },
     computed: {
@@ -84,8 +42,89 @@ export default {
 }
 </script>
 
-<style scoped>
-.cw-icon {
-    font-size: 70px;
+<style scoped lang="scss">
+
+#current-weather-panel {
+    height: 400px;
+    background-color: white;
+    width: 450px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+
+    #current-weather-main {
+        height: 260px;
+        background-image: linear-gradient(45deg, #421163, #0090FF);
+        border-radius: inherit;
+        padding: 30px;
+        color: white;
+        position: relative;
+        margin: -30px;
+        margin-bottom: 20px;
+
+        p {
+            margin: 0;
+        }
+
+        .cw-location {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .cw-icon {
+            font-size: 110px;
+            position: absolute;
+            right: 30px;
+            top: 30px;
+        }
+
+        .cw-temperature {
+            font-size: 70px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 50px;
+            left: 50px
+        }
+
+        .cw-description {
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            font-size: 20px;
+        }
+    }
+
+    #current-weather-details {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        p {
+            margin: 0;
+            width: 50%;
+            font-size: 18px;
+
+            span {
+                display: block;
+                color: #848484;
+                margin-bottom: -5px;
+            }
+
+            &:nth-of-type(2n) {
+                text-align: right;
+            }
+
+            &:nth-of-type(1) {
+                color: #FF9200;
+                font-weight: bold;
+            }
+
+            &:nth-of-type(3) {
+                color:#008FFE;
+                font-weight: bold;
+            }
+        }
+    }
 }
+
 </style>

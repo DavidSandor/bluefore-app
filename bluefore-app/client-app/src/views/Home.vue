@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <input v-model.lazy="chosenLocation" type="text">
+  <div id="home-panel">
 
-    <hr>
+    <div id="date-time-panel">
+      <p>{{localDay}}</p>
+      <p>{{localDate}}</p>
+      <p><span>local time</span>{{localTime}}</p>
+      <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
+      <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
+    </div>
 
-    <input type="radio" id="hun" value="hu" v-model="chosenLanguage">
+    <!-- <input type="radio" id="hun" value="hu" v-model="chosenLanguage">
     <label for="hun">Hun</label>
     <br>
     <input type="radio" id="eng" value="en" v-model="chosenLanguage">
     <label for="eng">Eng</label>
-    <br>
+    <br> -->
 
-    <hr>
+    <div id="current-hourly-panel">
+      <current-weather></current-weather>
+      <forecast-hourly></forecast-hourly>
+    </div>
 
-    <input v-model="isUseCurrentLocation" type="checkbox" :disabled="!currentLocationEnabled"> Use current location
-
-    <br>
-
-    <current-weather class="current-weather"></current-weather>
-    <forecast-hourly class="forecast-hourly"></forecast-hourly>
-    <forecast-daily class="forecast-daily"></forecast-daily>
+    <forecast-daily></forecast-daily>
   </div>
 </template>
 
@@ -28,7 +30,7 @@ import currentWeather from '@/components/CurrentWeather.vue';
 import forecastHourly from '@/components/ForecastHourly.vue';
 import forecastDaily from '@/components/ForecastDaily.vue';
 import REQUESTS from '@/connection/requests';
-import GEOLOCATION from '@/geolocation/geolocation';
+import DATE_HELPER from '@/utility/date-helper';
 
 import { mapGetters, mapMutations } from 'vuex';
 
@@ -41,31 +43,22 @@ export default {
   },
   data() {
     return {
-      chosenLocation: '',
       chosenLanguage: 'en',
-      isUseCurrentLocation: true
+      localDay: '',
+      localDate: '',
+      localTime: '',
+      timerInterval: '',
+      sunrise: '',
+      sunset: ''
     }
   },
-  created() {
-    GEOLOCATION.updateLocation();
-  },
   watch: {
-    chosenLocation(val) {
-      if(val && val !== this.location) {
-        this.isUseCurrentLocation = false;
-        REQUESTS.updateWeatherData({location: this.chosenLocation});
-      }
-    },
     chosenLanguage(val) {
       this.setLanguage(val);
       REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
     },
-    isUseCurrentLocation(val) {
-      this.setUseCurrentLocation(val);
-      if(val) {
-        this.chosenLocation = '';
-        GEOLOCATION.updateLocation();
-      }
+    currentWeather() {
+      this.updateCurrentWeatherData();
     }
   },
   computed: {
@@ -81,20 +74,70 @@ export default {
         'setLanguage',
         'setUseCurrentLocation'
         ]),
+    updateCurrentWeatherData() {
+        if(this.timerInterval) {
+            clearInterval(this.timerInterval);
+        }
+
+        if(this.currentWeather?.location) {
+            this.sunrise = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunrise + this.currentWeather.timezone));
+            this.sunset = DATE_HELPER.convertToHourFormat(new Date(this.currentWeather.sunset + this.currentWeather.timezone));
+
+            const setLocalDateTime = () => {
+                const date = new Date(Date.now() + this.currentWeather.timezone);
+                this.localDay = DATE_HELPER.getWeekday(date.getUTCDay());
+                this.localDate = DATE_HELPER.convertToDateFormat(date);
+                this.localTime = DATE_HELPER.convertToHourFormat(date);
+            }
+
+            setLocalDateTime();
+
+            this.timerInterval = setInterval(() => {
+                setLocalDateTime();
+            }, 1000);
+
+            this.isWeatherLoaded = true;
+        } else {
+            this.isWeatherLoaded = false;
+        }
+    },
   }
 }
 </script>
 
-<style scoped>
-.current-weather {
-  border: 1px solid gray;
+<style scoped lang="scss">
+
+#home-panel {
+  max-width: 1020px;
+  margin: 0 auto;
+
+  #date-time-panel {
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+
+    p {
+      margin: 0;
+      margin-right: 20px;
+
+      span {
+        color: #848484;
+        margin-right: 5px;
+
+        img {
+          filter: invert(0.7);
+          height: 22px;
+        }
+      }
+    }
+  }
+
+  #current-hourly-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
-.forecast-hourly {
-  border: 1px solid gray;
-}
 
-.forecast-daily {
-  border: 1px solid gray;
-}
 </style>
