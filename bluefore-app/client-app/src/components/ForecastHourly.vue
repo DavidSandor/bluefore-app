@@ -4,7 +4,7 @@
             <p class="hw-day">{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
             <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             <i class="hw-icon" :class="`owi owi-${forecast.iconId}`"></i>
-            <p class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
+            <p v-if="forecast.precipitationProbability" class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
             <div class="hw-temperature-meter">
                 <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature)}%`}">
                     <p class="hw-temperature">{{toDegreeFormat(forecast.temperature)}}</p>
@@ -23,8 +23,7 @@ import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            maxTemp: -100,
-            minTemp: 100
+            maxTemp: -100
         }
     },
     computed: {
@@ -49,17 +48,12 @@ export default {
         },
         setMinMaxTemp(forecastHourly) {
             this.maxTemp = -100;
-            this.minTemp = 100;
 
             for (const key in forecastHourly) {
                 if (forecastHourly.hasOwnProperty(key)) {
                     const forecast = forecastHourly[key];
                     if(forecast.temperature > this.maxTemp) {
                         this.maxTemp = forecast.temperature;
-                    }
-
-                    if(forecast.temperature < this.minTemp) {
-                        this.minTemp = forecast.temperature;
                     }
                 }
             }

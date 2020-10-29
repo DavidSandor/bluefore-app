@@ -113,12 +113,13 @@ export default {
 
   #date-time-panel {
     display: flex;
-    padding: 20px;
+    padding: 25px;
     justify-content: center;
+    font-size: 14px;
 
     p {
       margin: 0;
-      margin-right: 20px;
+      margin-right: 25px;
 
       span {
         color: #848484;

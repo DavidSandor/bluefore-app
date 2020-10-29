@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            maxOfAllTemp: -100,
+            maxOfAllTemp: -100
         }
     },
     computed: {

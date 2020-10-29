@@ -34,6 +34,6 @@ export default {
         return `${date.getUTCHours() > 9 ? date.getUTCHours() : '0' + date.getUTCHours()} : ${date.getUTCMinutes() > 9 ? date.getUTCMinutes() : '0' + date.getUTCMinutes()}`;
     },
     convertToDateFormat(date) {
-        return `${date.getUTCDate()}.${date.getUTCMonth() + 1}.${date.getUTCFullYear()}`;
+        return `${date.getUTCDate()}. ${this.getMonth(date.getUTCMonth())} ${date.getUTCFullYear()}`;
     }
 }
