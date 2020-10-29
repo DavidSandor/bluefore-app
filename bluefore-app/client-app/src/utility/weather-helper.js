@@ -50,6 +50,6 @@ export default {
         return windDirection;
     },
     convertWindSpeed(speed) {
-        return (speed * 3.6).toFixed(1);
+        return Math.round(speed * 3.6);
     }
 }
