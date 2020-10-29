@@ -22,8 +22,8 @@ router.get('/api/forecast-weather/:lat/:lon', async (req, res, next) => {
             // 3 hours interval
             (w, index) => index % 3 == 2
         ).filter(
-            // 24 hours range
-            (w, index) => index < 8
+            // 18 hours range
+            (w, index) => index < 6
         ).map(weather => new ForecastHourly(weather, forecastWeather.timezone_offset));
 
     const forecastDaily = forecastWeather.daily.filter(
