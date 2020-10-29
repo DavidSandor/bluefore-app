@@ -28,7 +28,7 @@ router.get('/api/forecast-weather/:lat/:lon', async (req, res, next) => {
 
     const forecastDaily = forecastWeather.daily.filter(
             // excluding today
-            (w, index) => index > 0
+            (w, index) => index > 0 && index < 7
         ).map(weather => new ForecastDaily(weather, forecastWeather.timezone_offset));
 
     res.json({forecastHourly, forecastDaily});
