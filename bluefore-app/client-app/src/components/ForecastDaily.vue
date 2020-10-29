@@ -137,7 +137,7 @@ export default {
             left: 10px;
             right: 10px;
             bottom: 10px;
-            top: 170px;
+            top: 180px;
 
             hr {
                 margin: 8px -10px;
