@@ -60,7 +60,6 @@ export default {
         'location',
         'language',
         'coordinates',
-        'currentWeather',
         'currentLocationEnabled'
         ]),
   },

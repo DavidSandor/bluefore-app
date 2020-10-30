@@ -1,36 +1,33 @@
 <template>
-  <div id="home-panel">
+    <div id="home-panel">
 
-    <div id="date-time-panel">
-      <p>{{localDay}}</p>
-      <p>{{localDate}}</p>
-      <p><span>local time</span>{{localTime}}</p>
-      <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
-      <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
+      <transition name="fade">
+        <scale-loader v-if="isLoading" class="scale-loader" :color="'#008FFE'"></scale-loader>
+      </transition>
+
+      <div id="date-time-panel">
+        <p>{{localDay}}</p>
+        <p>{{localDate}}</p>
+        <p><span>local time</span>{{localTime}}</p>
+        <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
+        <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
+      </div>
+
+      <div id="current-hourly-panel">
+        <current-weather class="cw"></current-weather>
+        <forecast-hourly class="fh"></forecast-hourly>
+      </div>
+
+      <forecast-daily></forecast-daily>
     </div>
-
-    <!-- <input type="radio" id="hun" value="hu" v-model="chosenLanguage">
-    <label for="hun">Hun</label>
-    <br>
-    <input type="radio" id="eng" value="en" v-model="chosenLanguage">
-    <label for="eng">Eng</label>
-    <br> -->
-
-    <div id="current-hourly-panel">
-      <current-weather></current-weather>
-      <forecast-hourly></forecast-hourly>
-    </div>
-
-    <forecast-daily></forecast-daily>
-  </div>
 </template>
 
 <script>
 import currentWeather from '@/components/CurrentWeather.vue';
 import forecastHourly from '@/components/ForecastHourly.vue';
 import forecastDaily from '@/components/ForecastDaily.vue';
-import REQUESTS from '@/connection/requests';
 import DATE_HELPER from '@/utility/date-helper';
+import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
 
 import { mapGetters, mapMutations } from 'vuex';
 
@@ -39,11 +36,11 @@ export default {
   components: {
     currentWeather,
     forecastHourly,
-    forecastDaily
+    forecastDaily,
+    ScaleLoader
   },
   data() {
     return {
-      chosenLanguage: 'en',
       localDay: '',
       localDate: '',
       localTime: '',
@@ -53,27 +50,18 @@ export default {
     }
   },
   watch: {
-    chosenLanguage(val) {
-      this.setLanguage(val);
-      REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
-    },
     currentWeather() {
       this.updateCurrentWeatherData();
     }
   },
   computed: {
   ...mapGetters([
-        'location',
         'coordinates',
         'currentWeather',
-        'currentLocationEnabled'
+        'isLoading'
         ]),
   },
   methods: {
-    ...mapMutations([
-        'setLanguage',
-        'setUseCurrentLocation'
-        ]),
     updateCurrentWeatherData() {
         if(this.timerInterval) {
             clearInterval(this.timerInterval);
@@ -95,10 +83,6 @@ export default {
             this.timerInterval = setInterval(() => {
                 setLocalDateTime();
             }, 1000);
-
-            this.isWeatherLoaded = true;
-        } else {
-            this.isWeatherLoaded = false;
         }
     },
   }
@@ -106,11 +90,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 #home-panel {
   max-width: 1020px;
   margin: 0 auto;
   position: relative;
+
+  .scale-loader {
+    position: absolute;
+    left: 0;
+    top: 15px;
+  }
 
   #date-time-panel {
     display: flex;
@@ -138,8 +127,32 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+
+    .cw {
+      margin-right: 15px;
+    }
+
+    .fh {
+      flex-grow: 1;
+    }
   }
 }
 
+// Scale loader transitions
 
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
 </style>

@@ -4,6 +4,8 @@ import store from '@/store/index';
 export default {
     async updateWeatherData(params) {
 
+        store.commit('setIsLoading', true);
+
         let currentWeather = {};
 
         if(params.location) {
@@ -19,5 +21,7 @@ export default {
 
         store.commit('setForecastHourly', forecastWeather.forecastHourly);
         store.commit('setForecastDaily', forecastWeather.forecastDaily);
+
+        store.commit('setIsLoading', false);
     }
 }

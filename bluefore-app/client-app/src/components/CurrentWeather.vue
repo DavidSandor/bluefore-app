@@ -43,11 +43,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 #current-weather-panel {
     height: 400px;
     background-color: white;
-    width: 450px;
+    width: 420px;
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 30px;
@@ -126,5 +125,4 @@ export default {
         }
     }
 }
-
 </style>

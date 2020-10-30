@@ -79,7 +79,6 @@ export default {
     background-color: white;
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-left: 20px;
     text-align: center;
     padding-top: 20px;
     position: relative;
@@ -138,6 +137,4 @@ export default {
         }
     }
 }
-
-
 </style>
