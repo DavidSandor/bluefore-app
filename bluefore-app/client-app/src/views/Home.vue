@@ -60,7 +60,6 @@ export default {
   },
   computed: {
   ...mapGetters([
-        'coordinates',
         'currentWeather',
         'isLoading',
         'isRequestError'
