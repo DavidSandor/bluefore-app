@@ -5,7 +5,7 @@ const CurrentWeather = require('../models/current-weather.model');
 
 const router = express.Router();
 
-router.get('/api/current-weather/:lat/:lon', async (req, res, next) => {
+router.get('/api/current-weather/:lat/:lon', (req, res) => {
     // Route params
     const latitude = req.params.lat;
     const longitude = req.params.lon;
@@ -13,30 +13,25 @@ router.get('/api/current-weather/:lat/:lon', async (req, res, next) => {
     // Query params
     const language = req.query.lang;
 
-    res.json(await getCurrentWeatherResponse({latitude, longitude, language}));
+    sendCurrentWeatherResponse({latitude, longitude, language}, res);
 });
 
-router.get('/api/current-weather/:loc', async (req, res, next) => {
+router.get('/api/current-weather/:loc', (req, res) => {
     // Route params
     const location = req.params.loc;
 
     // Query params
     const language = req.query.lang;
 
-    res.json(await getCurrentWeatherResponse({location, language}));
+    sendCurrentWeatherResponse({location, language}, res);
 });
 
-const getCurrentWeatherResponse = async (args) => {
-    try {
-        const currentWeather = (
-            await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${args.location || ''}&lat=${args.latitude || ''}&lon=${args.longitude || ''}&units=metric&lang=${args.language || ''}&appid=${environment.WEATHER_API_KEY}`)
-            ).data;
-
-        return Promise.resolve(new CurrentWeather(currentWeather));
-
-    } catch (error) {
-        return {msg: 'Request failed!'};
-    }
+const sendCurrentWeatherResponse = (args, res) => {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${args.location || ''}&lat=${args.latitude || ''}&lon=${args.longitude || ''}&units=metric&lang=${args.language || ''}&appid=${environment.WEATHER_API_KEY}`).then(currentWeather => {
+        res.json(new CurrentWeather(currentWeather.data));
+    }).catch(err => {
+        res.status(err.response.status).send(err.response.data);
+    });
 }
 
 module.exports = router;
