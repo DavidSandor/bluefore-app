@@ -10,7 +10,8 @@ export default createStore({
     language: 'en',
     useCurrentLocation: true,
     currentLocationEnabled: true,
-    isLoading: false
+    isLoading: false,
+    isRequestError: false
   },
   getters: {
     location(state) {
@@ -40,6 +41,9 @@ export default createStore({
     isLoading(state) {
       return state.isLoading;
     },
+    isRequestError(state) {
+      return state.isRequestError;
+    },
   },
   mutations: {
     setCurrentWeather(state, currentWeather) {
@@ -64,6 +68,9 @@ export default createStore({
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
+    },
+    setIsRequestError(state, isRequestError) {
+      state.isRequestError = isRequestError;
     },
   },
   actions: {

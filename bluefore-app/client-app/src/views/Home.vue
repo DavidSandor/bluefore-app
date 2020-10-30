@@ -1,24 +1,28 @@
 <template>
     <div id="home-panel">
+      <template v-if="!isRequestError">
+        <transition name="fade">
+          <scale-loader v-if="isLoading" class="scale-loader" :color="'#008FFE'"></scale-loader>
+        </transition>
 
-      <transition name="fade">
-        <scale-loader v-if="isLoading" class="scale-loader" :color="'#008FFE'"></scale-loader>
-      </transition>
+        <div id="date-time-panel">
+          <p>{{localDay}}</p>
+          <p>{{localDate}}</p>
+          <p><span>local time</span>{{localTime}}</p>
+          <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
+          <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
+        </div>
 
-      <div id="date-time-panel">
-        <p>{{localDay}}</p>
-        <p>{{localDate}}</p>
-        <p><span>local time</span>{{localTime}}</p>
-        <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
-        <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
-      </div>
+        <div id="current-hourly-panel">
+          <current-weather class="cw"></current-weather>
+          <forecast-hourly class="fh"></forecast-hourly>
+        </div>
 
-      <div id="current-hourly-panel">
-        <current-weather class="cw"></current-weather>
-        <forecast-hourly class="fh"></forecast-hourly>
-      </div>
-
-      <forecast-daily></forecast-daily>
+        <forecast-daily></forecast-daily>
+      </template>
+      <template v-else>
+        <p class="response-error">Sorry, something went wrong during weather request!</p>
+      </template>
     </div>
 </template>
 
@@ -58,7 +62,8 @@ export default {
   ...mapGetters([
         'coordinates',
         'currentWeather',
-        'isLoading'
+        'isLoading',
+        'isRequestError'
         ]),
   },
   methods: {
@@ -137,6 +142,12 @@ export default {
       flex-grow: 1;
     }
   }
+}
+
+.response-error {
+  text-align: center;
+  padding: 50px 0 0 0;
+  margin: 0;
 }
 
 // Scale loader transitions
