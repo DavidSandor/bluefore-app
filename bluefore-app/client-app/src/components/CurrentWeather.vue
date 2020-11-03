@@ -51,6 +51,10 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 30px;
 
+    @media all and (max-width: 700px) {
+        width: 100%;
+    }
+
     #current-weather-main {
         height: 260px;
         background-image: linear-gradient(45deg, #421163, #0090FF);
@@ -66,19 +70,20 @@ export default {
         }
 
         .cw-location {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
+            max-width: 65%;
         }
 
         .cw-icon {
-            font-size: 110px;
+            font-size: 100px;
             position: absolute;
             right: 30px;
             top: 30px;
         }
 
         .cw-temperature {
-            font-size: 70px;
+            font-size: 50px;
             font-weight: bold;
             position: absolute;
             bottom: 50px;

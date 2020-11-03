@@ -42,7 +42,7 @@ export default {
             return WEATHER_HELPER.toDegreeFormat(deg);
         },
         getTemperatureMeterValue(temp) {
-            const percentage = (temp / this.maxTemp * 100).toFixed(2);
+            const percentage = (Math.round(temp) / Math.round(this.maxTemp) * 100);
 
             return percentage < 20 ? 20 : percentage;
         },
@@ -72,16 +72,33 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    @media all and (max-width: 700px) {
+        margin: 0;
+        padding: 10px;
+        overflow-x: auto;
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
 
 .hourly-weather {
     width: 84px;
+    height: 400px;
     background-color: white;
     border-radius: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     text-align: center;
     padding-top: 20px;
     position: relative;
+
+    @media all and (max-width: 1040px) {
+        margin-right: -8px;
+    }
+
+    @media all and (max-width: 700px) {
+        flex: 0 0 auto;
+    }
 
     p {
         margin-bottom: 10px;

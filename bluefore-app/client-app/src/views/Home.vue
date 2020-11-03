@@ -6,11 +6,11 @@
         </transition>
 
         <div id="date-time-panel">
-          <p>{{localDay}}</p>
-          <p>{{localDate}}</p>
-          <p><span>local time</span>{{localTime}}</p>
-          <p><span><img src="../assets/icons/wi-sunrise.svg" />sunrise</span>{{sunrise}}</p>
-          <p><span><img src="../assets/icons/wi-sunset.svg" />sunset</span>{{sunset}}</p>
+          <p class="mobile-hide">{{localDay}}</p>
+          <p class="mobile-hide">{{localDate}}</p>
+          <p><span><img id="clock-icon" src="../assets/icons/clock.svg" /><span class="mobile-hide">local time</span></span>{{localTime}}</p>
+          <p><span><img src="../assets/icons/wi-sunrise.svg" /><span class="mobile-hide">sunrise</span></span>{{sunrise}}</p>
+          <p><span><img src="../assets/icons/wi-sunset.svg" /><span class="mobile-hide">sunset</span></span>{{sunset}}</p>
         </div>
 
         <div id="current-hourly-panel">
@@ -94,26 +94,60 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.mobile-hide {
+  @media all and (max-width: 1040px) {
+    display: none;
+  }
+}
+
 #home-panel {
-  max-width: 1020px;
+  max-width: 1040px;
+  padding: 20px;
   margin: 0 auto;
   position: relative;
 
+  @media all and (max-width: 700px) {
+    padding-top: 0;
+  }
+
   .scale-loader {
     position: absolute;
-    left: 0;
+    left: 20px;
     top: 15px;
+
+    @media all and (max-width: 700px) {
+      left: 200px;
+      top: -120px;
+      z-index: 20;
+    }
   }
 
   #date-time-panel {
     display: flex;
-    padding: 25px;
+    padding: 20px;
+    padding-top: 0;
     justify-content: center;
     font-size: 14px;
+    width: 100%;
+
+      @media all and (max-width: 700px) {
+        padding: 10px;
+        padding-bottom: 12px;
+        justify-content: flex-start;
+      }
 
     p {
       margin: 0;
       margin-right: 25px;
+
+      @media all and (max-width: 700px) {
+
+        margin-right: 10px;
+
+        &:last-of-type {
+          margin: 0;
+        }
+      }
 
       span {
         color: #848484;
@@ -123,6 +157,11 @@ export default {
           filter: invert(0.7);
           height: 22px;
         }
+
+        #clock-icon {
+          height: 13px;
+          margin-right: 2px;
+        }
       }
     }
   }
@@ -131,14 +170,29 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
+    width: 100%;
+
+    @media all and (max-width: 1040px) {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
 
     .cw {
       margin-right: 15px;
+
+      @media all and (max-width: 1040px) {
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
     }
 
     .fh {
       flex-grow: 1;
+
+      @media all and (max-width: 1040px) {
+        margin: 0 auto;
+        flex-grow: 0;
+      }
     }
   }
 }
