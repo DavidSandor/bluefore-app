@@ -18,6 +18,8 @@
           <forecast-hourly class="fh"></forecast-hourly>
         </div>
 
+        <img id="calendar-icon" src="../assets/icons/calendar.svg" />
+
         <forecast-daily></forecast-daily>
       </template>
       <template v-else>
@@ -103,6 +105,7 @@ export default {
 #home-panel {
   max-width: 1040px;
   padding: 20px;
+  padding-bottom: 0;
   margin: 0 auto;
   position: relative;
 
@@ -171,6 +174,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    margin-bottom: 15px;
 
     @media all and (max-width: 1040px) {
         flex-wrap: wrap;
@@ -194,6 +198,13 @@ export default {
         flex-grow: 0;
       }
     }
+  }
+
+  #calendar-icon {
+    display: block;
+    margin: 0 auto;
+    height: 30px;
+    filter: invert(0.7);
   }
 }
 

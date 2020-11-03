@@ -1,8 +1,10 @@
 <template>
     <div class="daily-weather-panel">
         <div class="daily-weather" v-for="forecast in forecastDaily" :key="forecast.dateTime">
-            <p class="dw-day">{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
-            <p class="dw-date">{{convertDate(forecast.dateTime + forecast.timezoneOffset)}} {{convertMonth(forecast.dateTime + forecast.timezoneOffset)}}</p>
+            <div class="dw-day-date">
+                <p class="dw-day">{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
+                <p class="dw-date">{{convertDate(forecast.dateTime + forecast.timezoneOffset)}} {{convertMonth(forecast.dateTime + forecast.timezoneOffset)}}</p>
+            </div>
             <i class="dw-icon" :class="`owi owi-${forecast.iconId}`"></i>
             <p class="dw-description">{{forecast.description}}</p>
             <div class="dw-temperature-bottom">
@@ -18,7 +20,6 @@
                     <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature.min)}%`}">
                         <p>{{toDegreeFormat(forecast.temperature.min)}}</p>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -59,8 +60,7 @@ export default {
             return WEATHER_HELPER.convertWindSpeed(value);
         },
         getTemperatureMeterValue(temp) {
-            const percentage = (temp / this.maxOfAllTemp * 100).toFixed(2);
-
+            const percentage = Math.round(temp) / Math.round(this.maxOfAllTemp) * 100;
             return percentage < 25 ? 25 : percentage;
         },
         setMinMaxTemp(forecastHourly) {
@@ -91,12 +91,21 @@ export default {
 
 <style scoped lang="scss">
 .daily-weather-panel {
-    margin: 50px 0;
+    margin: 15px 0;
     margin-bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
+
+    @media all and (max-width: 1040px) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    @media all and (max-width: 700px) {
+        flex-direction: column;
+    }
 
     .daily-weather {
         width: 150px;
@@ -107,8 +116,35 @@ export default {
         padding-top: 20px;
         position: relative;
 
+        @media all and (max-width: 1040px) {
+            margin-right: -8px;
+            margin-bottom: 15px;
+        }
+
+        @media all and (max-width: 700px) {
+            width: 100%;
+            display: flex;
+            padding: 15px 20px;
+            padding-top: 20px;
+            height: 80px;
+            justify-content: space-between;
+        }
+
         p {
             margin: 0;
+        }
+
+        .dw-day-date {
+            @media all and (max-width: 700px) {
+                position: absolute;
+                top: 5px;
+                left: 20px;
+
+                p {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+            }
         }
 
         .dw-day {
@@ -124,12 +160,22 @@ export default {
             font-size: 50px;
             margin: 15px 0;
             color:#7D7D7D;
+
+            @media all and (max-width: 700px) {
+                font-size: 40px;
+                margin: 0;
+                margin-top: 10px;
+            }
         }
 
         .dw-description {
             font-size: 14px;
             color:  #848484;
             padding: 0 15px;
+
+            @media all and (max-width: 700px) {
+                display: none;
+            }
         }
 
         .dw-temperature-bottom {
@@ -139,14 +185,30 @@ export default {
             bottom: 10px;
             top: 180px;
 
+            @media all and (max-width: 700px) {
+                position: static;
+                display: flex;
+                flex-grow: 1;
+                padding-left: 5px;
+            }
+
             hr {
                 margin: 8px -10px;
+
+                @media all and (max-width: 700px) {
+                    display: none;
+                }
             }
 
             .dw-rain-wind {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-evenly;
+
+                @media all and (max-width: 700px) {
+                    padding-top: 10px;
+                    margin-left: auto;
+                }
 
                 p {
                     font-size: 14px;
@@ -168,6 +230,13 @@ export default {
                 right: 0;
                 bottom: 0;
                 top: 60px;
+
+                @media all and (max-width: 700px) {
+                    position: static;
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: auto;
+                }
 
                 .inner-meter {
                     position: absolute;
@@ -195,6 +264,18 @@ export default {
 
                         p {
                             color: #0488F6;
+                        }
+                    }
+
+                    @media all and (max-width: 700px) {
+                        position: static;
+                        width: 100%;
+                        background-color: transparent!important;
+                        padding: 0;
+
+                        p {
+                            margin-top: -6px;
+                            font-size: 20px;
                         }
                     }
                 }

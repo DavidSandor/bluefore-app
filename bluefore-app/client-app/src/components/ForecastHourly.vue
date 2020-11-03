@@ -42,8 +42,7 @@ export default {
             return WEATHER_HELPER.toDegreeFormat(deg);
         },
         getTemperatureMeterValue(temp) {
-            const percentage = (Math.round(temp) / Math.round(this.maxTemp) * 100);
-
+            const percentage = Math.round(temp) / Math.round(this.maxTemp) * 100;
             return percentage < 20 ? 20 : percentage;
         },
         setMinMaxTemp(forecastHourly) {
