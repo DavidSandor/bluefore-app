@@ -101,6 +101,7 @@ export default {
     @media all and (max-width: 1040px) {
         flex-wrap: wrap;
         justify-content: center;
+        margin-bottom: 20px;
     }
 
     @media all and (max-width: 700px) {
@@ -143,6 +144,7 @@ export default {
                 p {
                     display: inline-block;
                     margin-right: 5px;
+                    font-size: 14px;
                 }
             }
         }
@@ -269,6 +271,7 @@ export default {
 
                     @media all and (max-width: 700px) {
                         position: static;
+                        text-align: right;
                         width: 100%;
                         background-color: transparent!important;
                         padding: 0;

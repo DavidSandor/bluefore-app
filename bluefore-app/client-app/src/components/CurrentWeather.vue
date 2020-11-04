@@ -73,6 +73,10 @@ export default {
             font-size: 28px;
             font-weight: bold;
             max-width: 65%;
+
+            @media all and (max-width: 700px) {
+                font-size: 22px;
+            }
         }
 
         .cw-icon {
@@ -80,6 +84,11 @@ export default {
             position: absolute;
             right: 30px;
             top: 30px;
+
+            @media all and (max-width: 700px) {
+                font-size: 80px;
+                top: 52px;
+            }
         }
 
         .cw-temperature {
@@ -87,7 +96,12 @@ export default {
             font-weight: bold;
             position: absolute;
             bottom: 50px;
-            left: 50px
+            left: 50px;
+
+            @media all and (max-width: 700px) {
+                font-size: 40px;
+                bottom: 70px;
+            }
         }
 
         .cw-description {
@@ -95,6 +109,10 @@ export default {
             right: 30px;
             bottom: 30px;
             font-size: 20px;
+
+            @media all and (max-width: 700px) {
+                font-size: 18px;
+            }
         }
     }
 

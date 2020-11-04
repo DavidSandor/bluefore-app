@@ -1,8 +1,10 @@
 <template>
     <div class="hourly-weather-panel">
         <div class="hourly-weather" v-for="forecast in forecastHourly" :key="forecast.dateTime">
-            <p class="hw-day">{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
-            <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
+            <div class="hw-day-hour">
+                <p class="hw-day">{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
+                <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
+            </div>
             <i class="hw-icon" :class="`owi owi-${forecast.iconId}`"></i>
             <p v-if="forecast.precipitationProbability" class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
             <div class="hw-temperature-meter">
@@ -73,11 +75,8 @@ export default {
     justify-content: space-between;
 
     @media all and (max-width: 700px) {
-        margin: 0;
-        padding: 10px;
-        overflow-x: auto;
+        flex-direction: column;
         width: 100%;
-        justify-content: flex-start;
     }
 }
 
@@ -96,11 +95,36 @@ export default {
     }
 
     @media all and (max-width: 700px) {
-        flex: 0 0 auto;
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        padding: 15px 20px;
+        padding-top: 20px;
+        height: 80px;
+        justify-content: space-between;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
     }
 
     p {
         margin-bottom: 10px;
+    }
+
+    .hw-day-hour {
+        @media all and (max-width: 700px) {
+                position: absolute;
+                top: 5px;
+                left: 20px;
+                display: flex;
+                flex-direction: row-reverse;
+
+                p {
+                    margin: 0;
+                    margin-right: 5px;
+                }
+            }
     }
 
     .hw-day {
@@ -115,12 +139,22 @@ export default {
     .hw-icon {
         font-size: 40px;
         color:#7D7D7D;
+
+        @media all and (max-width: 700px) {
+            font-size: 40px;
+            margin: 0;
+            margin-top: 10px;
+        }
     }
 
     .hw-precipitation {
         font-size: 14px;
         color: #848484;
         margin-top: 10px;
+
+        @media all and (max-width: 700px) {
+            padding-top: 10px;
+        }
 
         img {
             height: 16px;
@@ -135,7 +169,11 @@ export default {
         right: 10px;
         bottom: 10px;
         top: 170px;
-        border-radius: 25px;  
+        border-radius: 25px;
+
+        @media all and (max-width: 700px) {
+            position: static;
+        }
 
         .inner-meter {      
             border-radius: inherit;
@@ -146,9 +184,18 @@ export default {
             right: 0;
             bottom: 0;
 
+            @media all and (max-width: 700px) {
+                position: static;
+                background-color: transparent;
+            }
+
             .hw-temperature {
                 font-size: 16px;
                 font-weight: bold;
+
+                @media all and (max-width: 700px) {
+                    font-size: 20px;
+                }
             }
         }
     }
