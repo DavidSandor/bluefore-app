@@ -1,31 +1,31 @@
 export default {
     getWeekday(index) {
         const days = [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday',
+            'sunday',
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
         ]
 
         return days[index];
     },
     getMonth(index) {
         const months = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
+            'january',
+            'february',
+            'march',
+            'april',
+            'may',
+            'june',
+            'july',
+            'august',
+            'september',
+            'october',
+            'november',
+            'december'
         ]
 
         return months[index];

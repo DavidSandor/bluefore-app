@@ -2,10 +2,10 @@
   <div>
     <div id="nav">
       <div id="nav-inner">
-        <h1><span>blue</span>Fore</h1>
+        <h1><span>blue</span>fore</h1>
         <i class="owi owi-02d"></i>
         <div id="location-search">
-          <input v-model.lazy="chosenLocation" type="text" placeholder="Search location">
+          <input v-model.lazy="chosenLocation" type="text" placeholder="search location">
           <button class="search"><img src="./assets/icons/search.svg" /></button>
           <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="isUseCurrentLocation = true">
             <img src="./assets/icons/location.svg" />
@@ -88,12 +88,14 @@ export default {
 
 <style lang="scss">
 
+@import url(https://fonts.googleapis.com/css?family=Comfortaa);
+
 body {
   background-color: #F5FAFA!important;
 }
 
 #app {
-   font-family: Avenir, Helvetica, Arial, sans-serif;
+   font-family: "Comfortaa", Helvetica, Arial, sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
 }
@@ -123,9 +125,11 @@ body {
   @media all and (max-width: 700px) {
     background-color: #17224D;
     opacity: 0.9;
+    padding: 30px;
+    right: 0;
     bottom: 0;
-    padding-left: 30px;
-    padding-right: 30px;
+    top: 70px;
+    position: fixed;
   }
 
   img {
@@ -143,6 +147,8 @@ body {
 
   @media all and (max-width: 700px) {
     margin-bottom: 60px;
+    position: sticky;
+    top: 0;
   }
 
   #nav-inner {
@@ -171,12 +177,13 @@ body {
     }
 
     i {
-      padding: 0 10px;
+      padding: 0 5px;
+      padding-bottom: 10px;
       font-size: 50px;
       margin-left: 5px;
 
       @media all and (max-width: 700px) {
-        font-size: 30px;
+        font-size: 35px;
         margin-left: 0;
       }
     }
@@ -188,29 +195,36 @@ body {
         position: absolute;
         left: 20px;
         right: 20px;
-        top: 100px;
-        text-align: left;
+        padding: 15px;
+        top: 70px;
+        display: flex;
+        justify-content: space-between;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 30px;
       }
 
       input[type=text] {
+        min-width: 0;
         border: none;
         height: 34px;
         padding-left: 15px;
-        border-radius: 100px 0 0 100px;
+        border-radius: 100px;
 
         @media all and (max-width: 700px) {
-          width: 65%;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+          flex-grow: 1;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
       }
 
       button.search {
         height: 34px;
+        width: 34px;
         border: none;
         background-color: #008FFE;
         color: white;
-        border-radius: 0 100px 100px 0;
-        padding: 0 10px;
+        border-radius: 100px;
+        margin-left: -34px;
 
         img {
           height: 22px;

@@ -71,7 +71,6 @@ export default {
 
         .cw-location {
             font-size: 28px;
-            font-weight: bold;
             max-width: 65%;
 
             @media all and (max-width: 700px) {
@@ -93,13 +92,12 @@ export default {
 
         .cw-temperature {
             font-size: 50px;
-            font-weight: bold;
             position: absolute;
             bottom: 50px;
             left: 50px;
 
             @media all and (max-width: 700px) {
-                font-size: 40px;
+                font-size: 45px;
                 bottom: 70px;
             }
         }
@@ -138,12 +136,10 @@ export default {
 
             &:nth-of-type(1) {
                 color: #FF9200;
-                font-weight: bold;
             }
 
             &:nth-of-type(3) {
                 color:#008FFE;
-                font-weight: bold;
             }
         }
     }

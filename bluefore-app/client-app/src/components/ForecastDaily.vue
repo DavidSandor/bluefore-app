@@ -275,6 +275,7 @@ export default {
                         width: 100%;
                         background-color: transparent!important;
                         padding: 0;
+                        height: 100%!important;
 
                         p {
                             margin-top: -6px;

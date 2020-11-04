@@ -38,7 +38,7 @@ export default {
             return DATE_HELPER.convertToHourFormat(new Date(date));
         },
         convertToday(date) {
-            return (new Date(date)).getUTCDate() > (new Date().getUTCDate()) ? 'Tomorrow' : 'Today';
+            return (new Date(date)).getUTCDate() > (new Date().getUTCDate()) ? 'tomorrow' : 'today';
         },
         toDegreeFormat(deg) {
             return WEATHER_HELPER.toDegreeFormat(deg);
@@ -187,6 +187,7 @@ export default {
             @media all and (max-width: 700px) {
                 position: static;
                 background-color: transparent;
+                height: 100%!important;
             }
 
             .hw-temperature {

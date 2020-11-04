@@ -134,9 +134,8 @@ export default {
     width: 100%;
 
       @media all and (max-width: 700px) {
-        padding: 10px;
+        padding-top: 10px;
         padding-bottom: 12px;
-        justify-content: flex-start;
       }
 
     p {
