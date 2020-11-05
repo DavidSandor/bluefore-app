@@ -41,7 +41,7 @@ export default {
     window.addEventListener("resize", this.windowResizeHandler);
     this.isMenuShown = window.innerWidth > 700;
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener("resize", this.windowResizeHandler);
   },
   watch: {
@@ -238,7 +238,7 @@ body {
         height: 34px;
         width: 34px;
         border: none;
-        background-color: #FF9200;
+        background-color: #FFA500;
         margin-left: 15px;
 
         @media all and (max-width: 700px) {

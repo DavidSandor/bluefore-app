@@ -253,10 +253,10 @@ export default {
 
                     &:nth-of-type(1) {
                         left: 0;
-                        background-color: rgba($color: #FF9200, $alpha: 0.25);
+                        background-color: rgba($color: #FFA500, $alpha: 0.25);
 
                         p {
-                            color: #FF9200;
+                            color: #FFA500;
                         }
                     }
 

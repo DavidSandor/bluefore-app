@@ -2,7 +2,7 @@
     <div id="current-weather-panel">
         <div id="current-weather-main">
             <p class="cw-location">{{currentWeather.location}}</p>
-            <i class="cw-icon" :class="`owi owi-${currentWeather.iconId}`"></i>
+            <img v-if="currentWeather.weatherConditionId" class="cw-icon" :src="iconUrl" />
             <p class="cw-temperature">{{toDegreeFormat(currentWeather.temperature)}}</p>
             <p class="cw-description">{{currentWeather.description}}</p>
         </div>
@@ -19,6 +19,8 @@
 <script>
 
 import WEATHER_HELPER from '@/utility/weather-helper';
+import ICON_HELPER from '@/utility/icon-helper';
+import DATE_HELPER from '@/utility/date-helper';
 
 import { mapGetters } from 'vuex';
 
@@ -32,12 +34,22 @@ export default {
         },
         toWindSpeed(value) {
             return WEATHER_HELPER.convertWindSpeed(value);
+        },
+        toIconUrl(id, isNight, isAnimated) {
+            return ICON_HELPER.getIcon(id, isNight, isAnimated);
+        },
+        toIsNight(sunrise, sunset) {
+            return DATE_HELPER.convertToIsNight(new Date(sunrise), new Date(sunset), new Date());
         }
     },
     computed: {
     ...mapGetters([
         'currentWeather'
         ]),
+        iconUrl() {
+            const isNight = this.toIsNight(this.currentWeather.sunrise, this.currentWeather.sunset);
+            return require(`../assets/icons/${this.toIconUrl(this.currentWeather.weatherConditionId, isNight, true)}`);
+        }
     }
 }
 </script>
@@ -79,14 +91,14 @@ export default {
         }
 
         .cw-icon {
-            font-size: 100px;
+            width: 130px;
             position: absolute;
-            right: 30px;
-            top: 30px;
+            right: 10px;
+            top: 10px;
 
             @media all and (max-width: 700px) {
                 font-size: 80px;
-                top: 52px;
+                top: 40px;
             }
         }
 
@@ -135,7 +147,7 @@ export default {
             }
 
             &:nth-of-type(1) {
-                color: #FF9200;
+                color: #FFA500;
             }
 
             &:nth-of-type(3) {

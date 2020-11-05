@@ -35,5 +35,8 @@ export default {
     },
     convertToDateFormat(date) {
         return `${date.getUTCDate()}. ${this.getMonth(date.getUTCMonth())} ${date.getUTCFullYear()}`;
+    },
+    convertToIsNight(sunrise, sunset, current) {
+        return current > sunset || current < sunrise;
     }
 }
