@@ -5,7 +5,7 @@
                 <p class="dw-day">{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
                 <p class="dw-date">{{convertDate(forecast.dateTime + forecast.timezoneOffset)}} {{convertMonth(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
-            <i class="dw-icon" :class="`owi owi-${forecast.iconId}`"></i>
+            <img v-if="forecast.weatherConditionId" class="dw-icon" :src="getIconUrl(forecast.weatherConditionId)" />
             <p class="dw-description">{{forecast.description}}</p>
             <div class="dw-temperature-bottom">
                 <hr>
@@ -30,6 +30,7 @@
 
 import DATE_HELPER from '@/utility/date-helper';
 import WEATHER_HELPER from '@/utility/weather-helper';
+import ICON_HELPER from '@/utility/icon-helper';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -40,7 +41,8 @@ export default {
     },
     computed: {
     ...mapGetters([
-        'forecastDaily'
+        'forecastDaily',
+        'currentWeather'
         ]),
     },
     methods: {
@@ -79,6 +81,13 @@ export default {
                     }
                 }
             }
+        },
+        toIconUrl(id) {
+            const isNight = DATE_HELPER.convertToIsNight(new Date(this.currentWeather.sunrise), new Date(this.currentWeather.sunset), new Date());
+            return ICON_HELPER.getIcon(id, isNight, false);
+        },
+        getIconUrl(id) {
+            return require(`../assets/icons/${this.toIconUrl(id)}`);
         }
     },
     watch: {
@@ -159,14 +168,16 @@ export default {
         }
 
         .dw-icon {
-            font-size: 50px;
-            margin: 15px 0;
-            color:#7D7D7D;
+            height: 90px;
+            width: 90px;
+            margin: -6px 0;
 
             @media all and (max-width: 700px) {
-                font-size: 40px;
+                height: 64px;
+                width: 64px;
                 margin: 0;
-                margin-top: 10px;
+                margin-top: -5px;
+                margin-left: -8px;
             }
         }
 

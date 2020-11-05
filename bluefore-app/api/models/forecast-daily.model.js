@@ -5,6 +5,7 @@ class ForecastDaily {
     sunset;
     temperature;
     iconId;
+    weatherConditionId;
     description;
     timezoneOffset;
     rainVolume;
@@ -17,6 +18,7 @@ class ForecastDaily {
         this.timezoneOffset = timezoneOffset * 1000;
         this.temperature = forecastWeatherData.temp;
         this.iconId = forecastWeatherData.weather[0].icon;
+        this.weatherConditionId = forecastWeatherData.weather[0].id;
         this.description = forecastWeatherData.weather[0].description;
         this.rainVolume = forecastWeatherData.rain;
         this.windSpeed = forecastWeatherData.wind_speed;

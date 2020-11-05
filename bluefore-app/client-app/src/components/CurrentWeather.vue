@@ -97,7 +97,6 @@ export default {
             top: 10px;
 
             @media all and (max-width: 700px) {
-                font-size: 80px;
                 top: 40px;
             }
         }

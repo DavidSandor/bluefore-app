@@ -130,6 +130,9 @@ export default {
             case 804:
                 icon += 'cloudy-804';
                 break;
+            default:
+                icon += 'cloudy-801d';
+                break;
         }
 
         return `${icon}.svg`;

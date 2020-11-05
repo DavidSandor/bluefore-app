@@ -5,7 +5,7 @@
                 <p class="hw-day">{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
                 <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
-            <i class="hw-icon" :class="`owi owi-${forecast.iconId}`"></i>
+            <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast.weatherConditionId)" />
             <p v-if="forecast.precipitationProbability" class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
             <div class="hw-temperature-meter">
                 <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature)}%`}">
@@ -20,6 +20,7 @@
 
 import DATE_HELPER from '@/utility/date-helper';
 import WEATHER_HELPER from '@/utility/weather-helper';
+import ICON_HELPER from '@/utility/icon-helper';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -30,7 +31,8 @@ export default {
     },
     computed: {
     ...mapGetters([
-        'forecastHourly'
+        'forecastHourly',
+        'currentWeather'
         ]),
     },
     methods: {
@@ -58,6 +60,13 @@ export default {
                     }
                 }
             }
+        },
+        toIconUrl(id) {
+            const isNight = DATE_HELPER.convertToIsNight(new Date(this.currentWeather.sunrise), new Date(this.currentWeather.sunset), new Date());
+            return ICON_HELPER.getIcon(id, isNight, false);
+        },
+        getIconUrl(id) {
+            return require(`../assets/icons/${this.toIconUrl(id)}`);
         }
     },
     watch: {
@@ -134,26 +143,25 @@ export default {
 
     .hw-hour {
         font-size: 14px;
+        margin: 0;
     }
 
-    .hw-icon {
-        font-size: 40px;
-        color:#7D7D7D;
-
+    .hw-icon {      
         @media all and (max-width: 700px) {
-            font-size: 40px;
+            width: 64px;
+            height: 64px;
             margin: 0;
-            margin-top: 10px;
+            margin-top: -5px;
+            margin-left: -8px;
         }
     }
 
     .hw-precipitation {
         font-size: 14px;
         color: #848484;
-        margin-top: 10px;
 
         @media all and (max-width: 700px) {
-            padding-top: 10px;
+            padding-top: 16px;
         }
 
         img {
