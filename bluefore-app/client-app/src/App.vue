@@ -3,7 +3,7 @@
     <div id="nav">
       <div id="nav-inner">
         <h1><span>blue</span>fore</h1>
-        <i class="owi owi-02d"></i>
+        <img id="brand-icon" src="./assets/icons/sunny.svg" />
         <div id="location-search">
           <input v-model.lazy="chosenLocation" type="text" placeholder="search location">
           <button class="search"><img src="./assets/icons/search.svg" /></button>
@@ -100,6 +100,18 @@ body {
    -moz-osx-font-smoothing: grayscale;
 }
 
+#brand-icon {
+  filter: invert(1);
+  width: 45px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+
+  @media all and (max-width: 700px) {
+    width: 35px;
+    margin-left: 6px;
+  }
+}
+
 #responsive-menu-button {
   position: absolute;
   line-height: 80px;
@@ -173,18 +185,6 @@ body {
 
       span {
         color: #008FFE;
-      }
-    }
-
-    i {
-      padding: 0 5px;
-      padding-bottom: 10px;
-      font-size: 50px;
-      margin-left: 5px;
-
-      @media all and (max-width: 700px) {
-        font-size: 35px;
-        margin-left: 0;
       }
     }
 
