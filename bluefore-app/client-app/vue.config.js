@@ -6,5 +6,14 @@ module.exports = {
             changeOrigin: true
           },
         }
+      },
+      css: {
+        loaderOptions: {
+          sass: {
+            prependData: `
+              @import "@/main.scss";
+            `
+          }
+        }
       }
     }

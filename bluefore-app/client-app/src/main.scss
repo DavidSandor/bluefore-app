@@ -1,0 +1,38 @@
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+
+@import url(https://fonts.googleapis.com/css?family=Comfortaa);
+
+$font-primary: 'Comfortaa';
+$font-backup: Helvetica, Arial, sans-serif;
+$font-color-light: #848484;
+
+$color-primary: #008FFE;
+$color-primary-dark: #17224D;
+$color-secondary: #FFA500;
+$color-body: lighten($color-primary, 47);
+$color-background: #FFFFFF;
+
+$space-primary: 20px;
+$space-secondary: 15px;
+
+$shadow-container: 0 0 10px rgba(0, 0, 0, 0.15);
+
+$radius-primary: 30px;
+$radius-secondary: 25px;
+$radius-full: 10000px;
+
+$screen-lg-width: 1040px;
+$screen-sm-width: 700px;
+
+// Nav
+$nav-height: 80px;
+
+// General style modifications
+
+textarea, select, input, button { 
+    outline: none;
+
+    &:active, &:focus {
+        outline: none;
+    }
+}

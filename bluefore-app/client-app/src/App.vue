@@ -5,8 +5,8 @@
         <h1><span>blue</span>fore</h1>
         <img id="brand-icon" src="./assets/icons/sunny.svg" />
         <div id="location-search">
-          <input v-model.lazy="chosenLocation" type="text" placeholder="search location">
-          <button class="search"><img src="./assets/icons/search.svg" /></button>
+          <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)">
+          <button class="search" @click="locationChangeHandler($event)"><img src="./assets/icons/search.svg" /></button>
           <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="isUseCurrentLocation = true">
             <img src="./assets/icons/location.svg" />
           </button>
@@ -28,6 +28,8 @@ import REQUESTS from '@/connection/requests';
 import GEOLOCATION from '@/geolocation/geolocation';
 import { mapGetters, mapMutations } from 'vuex';
 
+import $ from 'jquery';
+
 export default {
   data() {
     return {
@@ -45,12 +47,6 @@ export default {
     window.removeEventListener("resize", this.windowResizeHandler);
   },
   watch: {
-    chosenLocation(val) {
-      if(val && val !== this.location) {
-        this.isUseCurrentLocation = false;
-        REQUESTS.updateWeatherData({location: this.chosenLocation});
-      }
-    },
     language(val) {
       REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
     },
@@ -75,6 +71,17 @@ export default {
         'setLanguage',
         'setUseCurrentLocation'
         ]),
+    locationChangeHandler(event) {
+      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase()) {
+
+        this.isUseCurrentLocation = false;
+        REQUESTS.updateWeatherData({location: this.chosenLocation});
+        
+        $('html, body').animate({scrollTop: 0}, 500);
+      }
+
+      event.target.blur();
+    },
     languageClickHandler(lang) {
       this.setLanguage(lang);
       this.isMenuShown = window.innerWidth > 700;
@@ -88,14 +95,12 @@ export default {
 
 <style lang="scss">
 
-@import url(https://fonts.googleapis.com/css?family=Comfortaa);
-
 body {
-  background-color: #F5FAFA!important;
+  background-color: $color-body!important;
 }
 
 #app {
-   font-family: "Comfortaa", Helvetica, Arial, sans-serif;
+   font-family: $font-primary, $font-backup;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
 }
@@ -106,7 +111,7 @@ body {
   margin-left: 10px;
   margin-bottom: 10px;
 
-  @media all and (max-width: 700px) {
+  @media all and (max-width: $screen-sm-width) {
     width: 35px;
     margin-left: 6px;
   }
@@ -114,13 +119,13 @@ body {
 
 #responsive-menu-button {
   position: absolute;
-  line-height: 80px;
-  right: 20px;
+  line-height: $nav-height;
+  right: $space-primary;
   height: 30px;
   filter: invert(1);
   display: none;
 
-  @media all and (max-width: 700px) {
+  @media all and (max-width: $screen-sm-width) {
     display: block;
   }
 }
@@ -128,36 +133,36 @@ body {
 #language-panel {
   position: absolute;
   right: 0;
-  top: 80px;
-  padding: 15px;
+  top: $nav-height;
+  padding: $space-secondary;
   display: flex;
   flex-direction: column;
   z-index: 10;
 
-  @media all and (max-width: 700px) {
-    background-color: #17224D;
+  @media all and (max-width: $screen-sm-width) {
+    background-color: $color-primary-dark;
     opacity: 0.9;
-    padding: 30px;
+    padding: $space-primary;
     right: 0;
     bottom: 0;
-    top: 70px;
+    top: $nav-height - 10px;
     position: fixed;
   }
 
   img {
     width: 34px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 100px;
+    box-shadow: $shadow-container;
+    border-radius: $radius-full;
     cursor: pointer;
   }
 }
 
 #nav {
-  height: 80px;
-  background-color: #17224D;
+  height: $nav-height;
+  background-color: $color-primary-dark;
   z-index: 10;
 
-  @media all and (max-width: 700px) {
+  @media all and (max-width: $screen-sm-width) {
     margin-bottom: 60px;
     position: sticky;
     top: 0;
@@ -168,10 +173,10 @@ body {
     flex-direction: row;
     align-items: center;
     height: inherit;
-    max-width: 1040px;
+    max-width: $screen-lg-width;
     margin: 0 auto;
     color: white;
-    padding: 0 20px;
+    padding: 0 $space-primary;
 
     h1 {
       text-align: left;
@@ -179,51 +184,59 @@ body {
       line-height: inherit;
       margin: 0;
 
-      @media all and (max-width: 700px) {
+      @media all and (max-width: $screen-sm-width) {
         font-size: 30px;
       }
 
       span {
-        color: #008FFE;
+        color: $color-primary;
       }
     }
 
     #location-search {
       margin-left: auto;
 
-      @media all and (max-width: 700px) {
+      @media all and (max-width: $screen-sm-width) {
         position: absolute;
-        left: 20px;
-        right: 20px;
-        padding: 15px;
+        left: $space-primary;
+        right: $space-primary;
+        padding: $space-secondary;
         top: 70px;
         display: flex;
         justify-content: space-between;
         background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 30px;
+        box-shadow: $shadow-container;
+        border-radius: $radius-full;
       }
 
       input[type=text] {
         min-width: 0;
         border: none;
         height: 34px;
-        padding-left: 15px;
-        border-radius: 100px;
+        padding-left: $space-secondary;
+        border-radius: $radius-full;
 
-        @media all and (max-width: 700px) {
+        &:focus {
+          background-color: lighten($color-secondary, 45);
+        }
+
+        @media all and (max-width: $screen-sm-width) {
           flex-grow: 1;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          box-shadow: $shadow-container;
         }
       }
 
-      button.search {
+      button {
         height: 34px;
         width: 34px;
         border: none;
-        background-color: #008FFE;
+        border-radius: $radius-full;
+
+      }
+
+      button.search {
+        background-color: $color-primary;
         color: white;
-        border-radius: 100px;
         margin-left: -34px;
 
         img {
@@ -234,14 +247,10 @@ body {
       }
 
       button.my-location {
-        border-radius: 100px;
-        height: 34px;
-        width: 34px;
-        border: none;
-        background-color: #FFA500;
-        margin-left: 15px;
+        background-color: $color-secondary;
+        margin-left: $space-secondary;
 
-        @media all and (max-width: 700px) {
+        @media all and (max-width: $screen-sm-width) {
           margin-left: 10px;
         }
 

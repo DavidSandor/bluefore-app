@@ -83,7 +83,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
 
-    @media all and (max-width: 700px) {
+    @media all and (max-width: $screen-sm-width) {
         flex-direction: column;
         width: 100%;
     }
@@ -93,22 +93,22 @@ export default {
     width: 84px;
     height: 400px;
     background-color: white;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: $radius-primary;
+    box-shadow: $shadow-container;
     text-align: center;
-    padding-top: 20px;
+    padding-top: $space-primary;
     position: relative;
 
-    @media all and (max-width: 1040px) {
+    @media all and (max-width: $screen-lg-width) {
         margin-right: -8px;
     }
 
-    @media all and (max-width: 700px) {
+    @media all and (max-width: $screen-sm-width) {
         width: 100%;
-        margin-bottom: 15px;
+        margin-bottom: $space-secondary;
         display: flex;
-        padding: 15px 20px;
-        padding-top: 20px;
+        padding: $space-secondary $space-primary;
+        padding-top: $space-primary;
         height: 80px;
         justify-content: space-between;
 
@@ -122,23 +122,23 @@ export default {
     }
 
     .hw-day-hour {
-        @media all and (max-width: 700px) {
-                position: absolute;
-                top: 5px;
-                left: 20px;
-                display: flex;
-                flex-direction: row-reverse;
+        @media all and (max-width: $screen-sm-width) {
+            position: absolute;
+            top: 5px;
+            left: $space-primary;
+            display: flex;
+            flex-direction: row-reverse;
 
-                p {
-                    margin: 0;
-                    margin-right: 5px;
-                }
+            p {
+                margin: 0;
+                margin-right: 5px;
             }
+        }
     }
 
     .hw-day {
         font-size: 14px;
-        color: #848484;
+        color: $font-color-light;
     }
 
     .hw-hour {
@@ -147,7 +147,7 @@ export default {
     }
 
     .hw-icon {      
-        @media all and (max-width: 700px) {
+        @media all and (max-width: $screen-sm-width) {
             width: 64px;
             height: 64px;
             margin: 0;
@@ -158,9 +158,9 @@ export default {
 
     .hw-precipitation {
         font-size: 14px;
-        color: #848484;
+        color: $font-color-light;
 
-        @media all and (max-width: 700px) {
+        @media all and (max-width: $screen-sm-width) {
             padding-top: 16px;
         }
 
@@ -177,22 +177,22 @@ export default {
         right: 10px;
         bottom: 10px;
         top: 170px;
-        border-radius: 25px;
+        border-radius: $radius-secondary;
 
-        @media all and (max-width: 700px) {
+        @media all and (max-width: $screen-sm-width) {
             position: static;
         }
 
         .inner-meter {      
             border-radius: inherit;
             padding-top: 10px;
-            background-color: rgba($color: #0488F6, $alpha: 0.25);
+            background-color: rgba($color: $color-primary, $alpha: 0.25);
             position: absolute;
             left: 0;
             right: 0;
             bottom: 0;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 position: static;
                 background-color: transparent;
                 height: 100%!important;
@@ -202,7 +202,7 @@ export default {
                 font-size: 16px;
                 font-weight: bold;
 
-                @media all and (max-width: 700px) {
+                @media all and (max-width: $screen-sm-width) {
                     font-size: 20px;
                 }
             }

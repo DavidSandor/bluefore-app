@@ -55,27 +55,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+$current-weather-space: 30px;
+
 #current-weather-panel {
     height: 400px;
     background-color: white;
     width: 420px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 30px;
+    border-radius: $radius-primary;
+    box-shadow: $shadow-container;
+    padding: $current-weather-space;
 
-    @media all and (max-width: 700px) {
+    @media all and (max-width: $screen-sm-width) {
         width: 100%;
     }
 
     #current-weather-main {
         height: 260px;
-        background-image: linear-gradient(45deg, #421163, #0090FF);
+        background-image: linear-gradient(45deg, #29005e, $color-primary);
         border-radius: inherit;
-        padding: 30px;
+        padding: $current-weather-space;
         color: white;
         position: relative;
-        margin: -30px;
-        margin-bottom: 20px;
+        margin: $current-weather-space * -1;
+        margin-bottom: $space-primary;
 
         p {
             margin: 0;
@@ -85,7 +88,7 @@ export default {
             font-size: 28px;
             max-width: 65%;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 font-size: 22px;
             }
         }
@@ -96,7 +99,7 @@ export default {
             right: 10px;
             top: 10px;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 top: 40px;
             }
         }
@@ -107,7 +110,7 @@ export default {
             bottom: 50px;
             left: 50px;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 font-size: 45px;
                 bottom: 70px;
             }
@@ -115,11 +118,11 @@ export default {
 
         .cw-description {
             position: absolute;
-            right: 30px;
-            bottom: 30px;
+            right: $current-weather-space;
+            bottom: $current-weather-space;
             font-size: 20px;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 font-size: 18px;
             }
         }
@@ -137,7 +140,7 @@ export default {
 
             span {
                 display: block;
-                color: #848484;
+                color: $font-color-light;
                 margin-bottom: -5px;
             }
 
@@ -146,11 +149,11 @@ export default {
             }
 
             &:nth-of-type(1) {
-                color: #FFA500;
+                color: $color-secondary;
             }
 
             &:nth-of-type(3) {
-                color:#008FFE;
+                color: $color-primary;
             }
         }
     }

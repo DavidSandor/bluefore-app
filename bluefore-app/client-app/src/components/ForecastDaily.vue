@@ -100,42 +100,42 @@ export default {
 
 <style scoped lang="scss">
 .daily-weather-panel {
-    margin: 15px 0;
+    margin: $space-secondary 0;
     margin-bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     text-align: center;
 
-    @media all and (max-width: 1040px) {
+    @media all and (max-width: $screen-lg-width) {
         flex-wrap: wrap;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: $space-primary;
     }
 
-    @media all and (max-width: 700px) {
+    @media all and (max-width: $screen-sm-width) {
         flex-direction: column;
     }
 
     .daily-weather {
         width: 150px;
         height: 360px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        border-radius: 30px;
+        box-shadow: $shadow-container;
+        border-radius: $radius-primary;
         background-color: white;
-        padding-top: 20px;
+        padding-top: $space-primary;
         position: relative;
 
-        @media all and (max-width: 1040px) {
+        @media all and (max-width: $screen-lg-width) {
             margin-right: -8px;
-            margin-bottom: 15px;
+            margin-bottom: $space-secondary;
         }
 
-        @media all and (max-width: 700px) {
+        @media all and (max-width: $screen-sm-width) {
             width: 100%;
             display: flex;
-            padding: 15px 20px;
-            padding-top: 20px;
+            padding: $space-secondary $space-primary;
+            padding-top: $space-primary;
             height: 80px;
             justify-content: space-between;
         }
@@ -145,10 +145,10 @@ export default {
         }
 
         .dw-day-date {
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 position: absolute;
                 top: 5px;
-                left: 20px;
+                left: $space-primary;
 
                 p {
                     display: inline-block;
@@ -164,7 +164,7 @@ export default {
 
         .dw-date {
             font-size: 14px;
-            color:  #848484;
+            color: $font-color-light;
         }
 
         .dw-icon {
@@ -172,7 +172,7 @@ export default {
             width: 90px;
             margin: -6px 0;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 height: 64px;
                 width: 64px;
                 margin: 0;
@@ -183,10 +183,10 @@ export default {
 
         .dw-description {
             font-size: 14px;
-            color:  #848484;
-            padding: 0 15px;
+            color: $font-color-light;
+            padding: 0 $space-secondary;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 display: none;
             }
         }
@@ -198,7 +198,7 @@ export default {
             bottom: 10px;
             top: 180px;
 
-            @media all and (max-width: 700px) {
+            @media all and (max-width: $screen-sm-width) {
                 position: static;
                 display: flex;
                 flex-grow: 1;
@@ -208,7 +208,7 @@ export default {
             hr {
                 margin: 8px -10px;
 
-                @media all and (max-width: 700px) {
+                @media all and (max-width: $screen-sm-width) {
                     display: none;
                 }
             }
@@ -218,14 +218,14 @@ export default {
                 flex-direction: row;
                 justify-content: space-evenly;
 
-                @media all and (max-width: 700px) {
+                @media all and (max-width: $screen-sm-width) {
                     padding-top: 10px;
                     margin-left: auto;
                 }
 
                 p {
                     font-size: 14px;
-                    color: #848484;
+                    color: $font-color-light;
                     margin: 0;
                     padding: 0 4px;
                 }
@@ -244,7 +244,7 @@ export default {
                 bottom: 0;
                 top: 60px;
 
-                @media all and (max-width: 700px) {
+                @media all and (max-width: $screen-sm-width) {
                     position: static;
                     display: flex;
                     flex-direction: column;
@@ -255,7 +255,7 @@ export default {
                     position: absolute;
                     bottom: 0;
                     width: 46%;
-                    border-radius: 25px;
+                    border-radius: $radius-secondary;
                     padding-top: 5px;
 
                     p {
@@ -264,23 +264,23 @@ export default {
 
                     &:nth-of-type(1) {
                         left: 0;
-                        background-color: rgba($color: #FFA500, $alpha: 0.25);
+                        background-color: rgba($color: $color-secondary, $alpha: 0.25);
 
                         p {
-                            color: #FFA500;
+                            color: $color-secondary;
                         }
                     }
 
                     &:nth-of-type(2) {
                         right: 0;
-                        background-color: rgba($color: #0488F6, $alpha: 0.25);
+                        background-color: rgba($color: $color-primary, $alpha: 0.25);
 
                         p {
-                            color: #0488F6;
+                            color:$color-primary;
                         }
                     }
 
-                    @media all and (max-width: 700px) {
+                    @media all and (max-width: $screen-sm-width) {
                         position: static;
                         text-align: right;
                         width: 100%;
