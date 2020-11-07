@@ -96,10 +96,10 @@ export default {
       if(error) {
         switch(error.status) {
           case 404:
-            this.responseErrorMessage = "Sorry your requested location was not found!";
+            this.responseErrorMessage = 'Sorry your requested location was not found!';
             break;
           default:
-            this.responseErrorMessage = "Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!";
+            this.responseErrorMessage = 'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!';
             break;
         }
       }

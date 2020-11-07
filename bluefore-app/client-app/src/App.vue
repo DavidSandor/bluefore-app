@@ -2,8 +2,10 @@
   <div>
     <div id="nav">
       <div id="nav-inner">
-        <h1><span>blue</span>fore</h1>
-        <img id="brand-icon" src="./assets/icons/sunny.svg" />
+        <h1 @click="brandClickHandler">
+          <span>blue</span>fore
+          <img id="brand-icon" src="./assets/icons/sunny.svg" />
+        </h1>
         <transition name="fade">
           <scale-loader v-if="isLoading" :color="'#008FFE'"></scale-loader>
         </transition>
@@ -50,8 +52,14 @@ export default {
   },
   methods: {
     ...mapMutations([
-        'setLanguage'
+        'setLanguage',
+        'setIsCurrentLocation'
         ]),
+    brandClickHandler() {
+      this.$router.push('/');
+      this.setIsCurrentLocation(true);
+      $('html, body').animate({scrollTop: 0}, 500);
+    },
     languageClickHandler(lang) {
       this.setLanguage(lang);
       this.isMenuShown = window.innerWidth > 700;
@@ -74,19 +82,6 @@ body {
    font-family: $font-primary, $font-backup;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
-}
-
-#brand-icon {
-  filter: invert(1);
-  width: 45px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  margin-right: $space-secondary;
-
-  @media all and (max-width: $screen-sm-width) {
-    width: 35px;
-    margin-left: 6px;
-  }
 }
 
 #responsive-menu-button {
@@ -154,6 +149,8 @@ body {
       font-size: 40px;
       line-height: inherit;
       margin: 0;
+      margin-right: $space-secondary;
+      cursor: pointer;
 
       @media all and (max-width: $screen-sm-width) {
         font-size: 30px;
@@ -162,6 +159,16 @@ body {
       span {
         color: $color-primary;
       }
+
+      #brand-icon {
+        filter: invert(1);
+        width: 45px;
+        margin-bottom: 10px;
+
+        @media all and (max-width: $screen-sm-width) {
+          width: 35px;
+        }
+      }    
     }
   }
 }
