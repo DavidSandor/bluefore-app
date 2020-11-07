@@ -59,7 +59,7 @@ export default {
       sunrise: '',
       sunset: '',
       chosenLocation: '',
-      isUseCurrentLocation: true,
+      isUseCurrentLocation: '',
     }
   },
   created() {
@@ -68,8 +68,10 @@ export default {
     if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
       REQUESTS.updateWeatherData({location: routeLocation});
       this.chosenLocation = routeLocation;
+      this.isUseCurrentLocation = false;
     } else {
       GEOLOCATION.updateLocation();
+      this.isUseCurrentLocation = true;
     }
   },
   watch: {
