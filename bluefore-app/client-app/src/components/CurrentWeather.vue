@@ -9,9 +9,9 @@
 
         <div id="current-weather-details">
             <p><span>max</span>{{toDegreeFormat(currentWeather.maxTemperature)}}</p>
-            <p><span>humidity</span>{{currentWeather.humidity}}%</p>
+            <p><span>{{TRANSLATE('humidity', language)}}</span>{{currentWeather.humidity}}%</p>
             <p><span>min</span>{{toDegreeFormat(currentWeather.minTemperature)}}</p>
-            <p><span>wind</span>{{toWindDirection(currentWeather.wind?.deg)}} {{toWindSpeed(currentWeather.wind?.speed)}} km/h</p>
+            <p><span>{{TRANSLATE('wind', language)}}</span>{{TRANSLATE(toWindDirection(currentWeather.wind?.deg), language)}} {{toWindSpeed(currentWeather.wind?.speed)}} km/h</p>
         </div>
     </div>
 </template>
@@ -21,6 +21,7 @@
 import WEATHER_HELPER from '@/utility/weather-helper';
 import ICON_HELPER from '@/utility/icon-helper';
 import DATE_HELPER from '@/utility/date-helper';
+import LANGUAGE_HELPER from '@/languages/languages';
 
 import { mapGetters } from 'vuex';
 
@@ -40,11 +41,17 @@ export default {
         },
         toIsNight(sunrise, sunset) {
             return DATE_HELPER.convertToIsNight(new Date(sunrise), new Date(sunset), new Date());
+        },
+        TRANSLATE(word, language) {
+            if(word && language) {
+                return LANGUAGE_HELPER(word, language);
+            }
         }
     },
     computed: {
     ...mapGetters([
-        'currentWeather'
+        'currentWeather',
+        'language'
         ]),
         iconUrl() {
             const isNight = this.toIsNight(this.currentWeather.sunrise, this.currentWeather.sunset);

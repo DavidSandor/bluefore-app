@@ -2,7 +2,7 @@
     <div class="hourly-weather-panel">
         <div class="hourly-weather" v-for="forecast in forecastHourly" :key="forecast.dateTime">
             <div class="hw-day-hour">
-                <p class="hw-day">{{convertToday(forecast.dateTime + forecast.timezoneOffset)}}</p>
+                <p class="hw-day">{{TRANSLATE(convertToday(forecast.dateTime + forecast.timezoneOffset), language)}}</p>
                 <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
             <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast.weatherConditionId)" />
@@ -21,6 +21,7 @@
 import DATE_HELPER from '@/utility/date-helper';
 import WEATHER_HELPER from '@/utility/weather-helper';
 import ICON_HELPER from '@/utility/icon-helper';
+import LANGUAGE_HELPER from '@/languages/languages';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -32,7 +33,8 @@ export default {
     computed: {
     ...mapGetters([
         'forecastHourly',
-        'currentWeather'
+        'currentWeather',
+        'language'
         ]),
     },
     created() {
@@ -70,6 +72,11 @@ export default {
         },
         getIconUrl(id) {
             return require(`../assets/icons/${this.toIconUrl(id)}`);
+        },
+        TRANSLATE(word, language) {
+            if(word && language) {
+                return LANGUAGE_HELPER(word, language);
+            }
         }
     },
     watch: {

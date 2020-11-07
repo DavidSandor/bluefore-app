@@ -2,7 +2,7 @@
     <div id="home-panel">
 
       <div id="location-search">
-        <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
+        <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
         <button class="my-location" :disabled="isCurrentLocation" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
@@ -11,11 +11,11 @@
 
       <template v-if="!responseError">
         <div id="date-time-panel">
-          <p class="mobile-hide">{{localDay}}</p>
+          <p class="mobile-hide">{{TRANSLATE(localDay, language)}}</p>
           <p class="mobile-hide">{{localDate}}</p>
-          <p><span><img id="clock-icon" src="../assets/icons/clock.svg" /><span class="mobile-hide">local time</span></span>{{localTime}}</p>
-          <p><span><img src="../assets/icons/wi-sunrise.svg" /><span class="mobile-hide">sunrise</span></span>{{sunrise}}</p>
-          <p><span><img src="../assets/icons/wi-sunset.svg" /><span class="mobile-hide">sunset</span></span>{{sunset}}</p>
+          <p><span><img id="clock-icon" src="../assets/icons/clock.svg" /><span class="mobile-hide">{{TRANSLATE('local time', language)}}</span></span>{{localTime}}</p>
+          <p><span><img src="../assets/icons/wi-sunrise.svg" /><span class="mobile-hide">{{TRANSLATE('sunrise', language)}}</span></span>{{sunrise}}</p>
+          <p><span><img src="../assets/icons/wi-sunset.svg" /><span class="mobile-hide">{{TRANSLATE('sunset', language)}}</span></span>{{sunset}}</p>
         </div>
 
         <div id="current-hourly-panel">
@@ -28,7 +28,7 @@
         <forecast-daily></forecast-daily>
       </template>
       <template v-else>
-        <p class="response-error">{{responseErrorMessage}}</p>
+        <p class="response-error">{{TRANSLATE(responseErrorMessage, language)}}</p>
       </template>
     </div>
 </template>
@@ -38,6 +38,7 @@ import currentWeather from '@/components/CurrentWeather.vue';
 import forecastHourly from '@/components/ForecastHourly.vue';
 import forecastDaily from '@/components/ForecastDaily.vue';
 import DATE_HELPER from '@/utility/date-helper';
+import LANGUAGE_HELPER from '@/languages/languages';
 import REQUESTS from '@/connection/requests';
 import GEOLOCATION from '@/geolocation/geolocation';
 import { mapGetters, mapMutations } from 'vuex';
@@ -141,7 +142,7 @@ export default {
             const setLocalDateTime = () => {
                 const date = new Date(Date.now() + this.currentWeather.timezone);
                 this.localDay = DATE_HELPER.getWeekday(date.getUTCDay());
-                this.localDate = DATE_HELPER.convertToDateFormat(date);
+                this.localDate = `${date.getUTCDate()}. ${this.TRANSLATE(DATE_HELPER.getMonth(date.getUTCMonth()), this.language)} ${date.getUTCFullYear()}`;
                 this.localTime = DATE_HELPER.convertToHourFormat(date);
             }
 
@@ -169,6 +170,11 @@ export default {
     currentLocationHandler() {
       this.setIsCurrentLocation(true);
       this.$router.push(`/`);
+    },
+    TRANSLATE(word, language) {
+      if(word && language) {
+        return LANGUAGE_HELPER(word, language);
+      }
     }
   }
 }

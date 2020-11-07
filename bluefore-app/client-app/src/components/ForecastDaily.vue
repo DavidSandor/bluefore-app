@@ -2,8 +2,8 @@
     <div class="daily-weather-panel">
         <div class="daily-weather" v-for="forecast in forecastDaily" :key="forecast.dateTime">
             <div class="dw-day-date">
-                <p class="dw-day">{{convertDay(forecast.dateTime + forecast.timezoneOffset)}}</p>
-                <p class="dw-date">{{convertDate(forecast.dateTime + forecast.timezoneOffset)}} {{convertMonth(forecast.dateTime + forecast.timezoneOffset)}}</p>
+                <p class="dw-day">{{TRANSLATE(convertDay(forecast.dateTime + forecast.timezoneOffset), language)}}</p>
+                <p class="dw-date">{{convertDate(forecast.dateTime + forecast.timezoneOffset)}} {{TRANSLATE(convertMonth(forecast.dateTime + forecast.timezoneOffset), language).substring(0, 3)}}</p>
             </div>
             <img v-if="forecast.weatherConditionId" class="dw-icon" :src="getIconUrl(forecast.weatherConditionId)" />
             <p class="dw-description">{{forecast.description}}</p>
@@ -31,6 +31,7 @@
 import DATE_HELPER from '@/utility/date-helper';
 import WEATHER_HELPER from '@/utility/weather-helper';
 import ICON_HELPER from '@/utility/icon-helper';
+import LANGUAGE_HELPER from '@/languages/languages';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -42,7 +43,8 @@ export default {
     computed: {
     ...mapGetters([
         'forecastDaily',
-        'currentWeather'
+        'currentWeather',
+        'language'
         ]),
     },
     created() {
@@ -53,7 +55,7 @@ export default {
             return DATE_HELPER.getWeekday((new Date(date)).getUTCDay());
         },
         convertMonth(date) {
-            return (DATE_HELPER.getMonth((new Date(date)).getUTCMonth())).substring(0, 3);
+            return (DATE_HELPER.getMonth((new Date(date)).getUTCMonth()));
         },
         convertDate(date) {
             return new Date(date).getUTCDate();
@@ -91,6 +93,11 @@ export default {
         },
         getIconUrl(id) {
             return require(`../assets/icons/${this.toIconUrl(id)}`);
+        },
+        TRANSLATE(word, language) {
+            if(word && language) {
+                return LANGUAGE_HELPER(word, language);
+            }
         }
     },
     watch: {
