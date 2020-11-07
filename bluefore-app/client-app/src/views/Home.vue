@@ -1,10 +1,15 @@
 <template>
     <div id="home-panel">
-      <template v-if="!isRequestError">
-        <transition name="fade">
-          <scale-loader v-if="isLoading" class="scale-loader" :color="'#008FFE'"></scale-loader>
-        </transition>
 
+      <div id="location-search">
+        <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)">
+        <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
+        <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="currentLocationHandler()">
+          <img src="../assets/icons/location.svg" />
+        </button>
+      </div>
+
+      <template v-if="!isRequestError">
         <div id="date-time-panel">
           <p class="mobile-hide">{{localDay}}</p>
           <p class="mobile-hide">{{localDate}}</p>
@@ -33,17 +38,17 @@ import currentWeather from '@/components/CurrentWeather.vue';
 import forecastHourly from '@/components/ForecastHourly.vue';
 import forecastDaily from '@/components/ForecastDaily.vue';
 import DATE_HELPER from '@/utility/date-helper';
-import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
-
+import REQUESTS from '@/connection/requests';
+import GEOLOCATION from '@/geolocation/geolocation';
 import { mapGetters, mapMutations } from 'vuex';
+import $ from 'jquery';
 
 export default {
   name: 'Home',
   components: {
     currentWeather,
     forecastHourly,
-    forecastDaily,
-    ScaleLoader
+    forecastDaily
   },
   data() {
     return {
@@ -52,22 +57,45 @@ export default {
       localTime: '',
       timerInterval: '',
       sunrise: '',
-      sunset: ''
+      sunset: '',
+      chosenLocation: '',
+      isUseCurrentLocation: true,
+    }
+  },
+  created() {
+    const routeLocation = this.$route.params.location;
+
+    if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
+      REQUESTS.updateWeatherData({location: routeLocation});
+      this.chosenLocation = routeLocation;
+    } else {
+      GEOLOCATION.updateLocation();
     }
   },
   watch: {
     currentWeather() {
       this.updateCurrentWeatherData();
+    },
+    isUseCurrentLocation(val) {
+      this.setUseCurrentLocation(val);
+      if(val) {
+        this.chosenLocation = '';
+        GEOLOCATION.updateLocation();
+      }
     }
   },
   computed: {
   ...mapGetters([
+        'location',
         'currentWeather',
-        'isLoading',
-        'isRequestError'
+        'isRequestError',
+        'currentLocationEnabled'
         ]),
   },
   methods: {
+    ...mapMutations([
+        'setUseCurrentLocation'
+        ]),
     updateCurrentWeatherData() {
         if(this.timerInterval) {
             clearInterval(this.timerInterval);
@@ -91,49 +119,131 @@ export default {
             }, 1000);
         }
     },
+    locationChangeHandler(event) {
+      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase()) {
+
+        this.isUseCurrentLocation = false;
+
+        REQUESTS.updateWeatherData({location: this.chosenLocation}).then(() => {
+          this.chosenLocation = this.location;
+          this.$router.push(`/${this.chosenLocation}`);
+        });
+        
+        $('html, body').animate({scrollTop: 0}, 500);
+      }
+
+      event.target.blur();
+    },
+    currentLocationHandler() {
+      this.isUseCurrentLocation = true;
+      this.$router.push(`/`);
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .mobile-hide {
-  @media all and (max-width: 1040px) {
+  @media all and (max-width: $screen-lg-width) {
     display: none;
   }
 }
 
+#location-search {
+  position: absolute;
+  right: $space-primary;
+  top: -57px;
+
+  @media all and (max-width: $screen-sm-width) {
+    position: fixed;
+    margin: 0;
+    left: $space-primary;
+    padding: $space-secondary;
+    top: $nav-height - 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: $shadow-container;
+    border-radius: $radius-full;
+    z-index: 10;
+  }
+
+  input[type=text] {
+    min-width: 0;
+    border: none;
+    height: 34px;
+    padding-left: $space-secondary;
+    border-radius: $radius-full;
+
+    &:focus {
+      background-color: lighten($color-secondary, 45);
+    }
+
+    @media all and (max-width: $screen-sm-width) {
+      flex-grow: 1;
+      box-shadow: $shadow-container;
+    }
+  }
+
+  button {
+    height: 34px;
+    width: 34px;
+    border: none;
+    border-radius: $radius-full;
+
+  }
+
+  button.search {
+    background-color: $color-primary;
+    color: white;
+    margin-left: -34px;
+
+    img {
+      height: 22px;
+      filter: invert(1);
+      padding-bottom: 3px;
+    }
+  }
+
+  button.my-location {
+    background-color: $color-secondary;
+    margin-left: $space-secondary;
+
+    @media all and (max-width: $screen-sm-width) {
+      margin-left: 10px;
+    }
+
+    img {
+      height: 22px;
+      filter: invert(1);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+}
+
 #home-panel {
-  max-width: 1040px;
-  padding: 20px;
+  max-width: $screen-lg-width;
+  padding: $space-primary;
   padding-bottom: 0;
   margin: 0 auto;
   position: relative;
 
-  @media all and (max-width: 700px) {
+  @media all and (max-width: $screen-sm-width) {
     padding-top: 0;
-  }
-
-  .scale-loader {
-    position: absolute;
-    left: 20px;
-    top: 15px;
-
-    @media all and (max-width: 700px) {
-      left: 200px;
-      top: -120px;
-      z-index: 20;
-    }
   }
 
   #date-time-panel {
     display: flex;
-    padding: 20px;
+    padding: $space-primary;
     padding-top: 0;
     justify-content: center;
     font-size: 14px;
     width: 100%;
 
-      @media all and (max-width: 700px) {
+      @media all and (max-width: $screen-sm-width) {
         padding-top: 10px;
         padding-bottom: 12px;
       }
@@ -142,7 +252,7 @@ export default {
       margin: 0;
       margin-right: 25px;
 
-      @media all and (max-width: 700px) {
+      @media all and (max-width: $screen-sm-width) {
 
         margin-right: 10px;
 
@@ -152,7 +262,7 @@ export default {
       }
 
       span {
-        color: #848484;
+        color: $font-color-light;
         margin-right: 5px;
 
         img {
@@ -173,26 +283,26 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: $space-secondary;
 
-    @media all and (max-width: 1040px) {
+    @media all and (max-width: $screen-lg-width) {
         flex-wrap: wrap;
         align-items: flex-start;
     }
 
     .cw {
-      margin-right: 15px;
+      margin-right: $space-secondary;
 
-      @media all and (max-width: 1040px) {
+      @media all and (max-width: $screen-lg-width) {
         margin: 0 auto;
-        margin-bottom: 20px;
+        margin-bottom: $space-primary;
       }
     }
 
     .fh {
       flex-grow: 1;
 
-      @media all and (max-width: 1040px) {
+      @media all and (max-width: $screen-lg-width) {
         margin: 0 auto;
         flex-grow: 0;
       }
@@ -211,22 +321,5 @@ export default {
   text-align: center;
   padding: 50px 0 0 0;
   margin: 0;
-}
-
-// Scale loader transitions
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s;
-    opacity: 0;
-}
-
-.fade-enter-to {
-  opacity: 1;
-}
-
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>

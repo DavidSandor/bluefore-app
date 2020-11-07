@@ -4,13 +4,9 @@
       <div id="nav-inner">
         <h1><span>blue</span>fore</h1>
         <img id="brand-icon" src="./assets/icons/sunny.svg" />
-        <div id="location-search">
-          <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)">
-          <button class="search" @click="locationChangeHandler($event)"><img src="./assets/icons/search.svg" /></button>
-          <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="isUseCurrentLocation = true">
-            <img src="./assets/icons/location.svg" />
-          </button>
-        </div>
+        <transition name="fade">
+          <scale-loader v-if="isLoading" :color="'#008FFE'"></scale-loader>
+        </transition>
         <img id="responsive-menu-button" src="./assets/icons/menu.svg" @click="this.isMenuShown = !this.isMenuShown" />
       </div>
     </div>
@@ -25,21 +21,20 @@
 <script>
 
 import REQUESTS from '@/connection/requests';
-import GEOLOCATION from '@/geolocation/geolocation';
 import { mapGetters, mapMutations } from 'vuex';
-
+import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue';
 import $ from 'jquery';
 
 export default {
+  components: {
+    ScaleLoader
+  },
   data() {
     return {
-      chosenLocation: '',
-      isUseCurrentLocation: true,
       isMenuShown: false
     }
   },
   created() {
-    GEOLOCATION.updateLocation();
     window.addEventListener("resize", this.windowResizeHandler);
     this.isMenuShown = window.innerWidth > 700;
   },
@@ -49,39 +44,19 @@ export default {
   watch: {
     language(val) {
       REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
-    },
-    isUseCurrentLocation(val) {
-      this.setUseCurrentLocation(val);
-      if(val) {
-        this.chosenLocation = '';
-        GEOLOCATION.updateLocation();
-      }
     }
   },
   computed: {
   ...mapGetters([
-        'location',
         'language',
         'coordinates',
-        'currentLocationEnabled'
+        'isLoading'
         ]),
   },
   methods: {
     ...mapMutations([
-        'setLanguage',
-        'setUseCurrentLocation'
+        'setLanguage'
         ]),
-    locationChangeHandler(event) {
-      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase()) {
-
-        this.isUseCurrentLocation = false;
-        REQUESTS.updateWeatherData({location: this.chosenLocation});
-        
-        $('html, body').animate({scrollTop: 0}, 500);
-      }
-
-      event.target.blur();
-    },
     languageClickHandler(lang) {
       this.setLanguage(lang);
       this.isMenuShown = window.innerWidth > 700;
@@ -110,6 +85,7 @@ body {
   width: 45px;
   margin-left: 10px;
   margin-bottom: 10px;
+  margin-right: $space-secondary;
 
   @media all and (max-width: $screen-sm-width) {
     width: 35px;
@@ -134,15 +110,14 @@ body {
   position: absolute;
   right: 0;
   top: $nav-height;
-  padding: $space-secondary;
+  padding: $space-primary;
   display: flex;
   flex-direction: column;
-  z-index: 10;
+  z-index: 11;
 
   @media all and (max-width: $screen-sm-width) {
     background-color: $color-primary-dark;
     opacity: 0.9;
-    padding: $space-primary;
     right: 0;
     bottom: 0;
     top: $nav-height - 10px;
@@ -192,78 +167,23 @@ body {
         color: $color-primary;
       }
     }
-
-    #location-search {
-      margin-left: auto;
-
-      @media all and (max-width: $screen-sm-width) {
-        position: absolute;
-        left: $space-primary;
-        right: $space-primary;
-        padding: $space-secondary;
-        top: 70px;
-        display: flex;
-        justify-content: space-between;
-        background-color: white;
-        box-shadow: $shadow-container;
-        border-radius: $radius-full;
-      }
-
-      input[type=text] {
-        min-width: 0;
-        border: none;
-        height: 34px;
-        padding-left: $space-secondary;
-        border-radius: $radius-full;
-
-        &:focus {
-          background-color: lighten($color-secondary, 45);
-        }
-
-        @media all and (max-width: $screen-sm-width) {
-          flex-grow: 1;
-          box-shadow: $shadow-container;
-        }
-      }
-
-      button {
-        height: 34px;
-        width: 34px;
-        border: none;
-        border-radius: $radius-full;
-
-      }
-
-      button.search {
-        background-color: $color-primary;
-        color: white;
-        margin-left: -34px;
-
-        img {
-          height: 22px;
-          filter: invert(1);
-          padding-bottom: 3px;
-        }
-      }
-
-      button.my-location {
-        background-color: $color-secondary;
-        margin-left: $space-secondary;
-
-        @media all and (max-width: $screen-sm-width) {
-          margin-left: 10px;
-        }
-
-        img {
-          height: 22px;
-          filter: invert(1);
-        }
-
-        &:disabled {
-          opacity: 0.4;
-        }
-      }
-    }
   }
+}
+
+// Scale loader transitions
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
