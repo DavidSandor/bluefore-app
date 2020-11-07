@@ -1,5 +1,14 @@
 import { createStore } from 'vuex'
 
+// Determine initial app language
+const initLanguage = (() => {
+  if(localStorage.getItem('language')) {
+    return localStorage.getItem('language');
+  } else {
+    return navigator.language.includes('hu') ? 'hu' : 'en'; 
+  }
+})();
+
 export default createStore({
   state: {
     location: '',
@@ -7,9 +16,8 @@ export default createStore({
     currentWeather: '',
     forecastHourly: '',
     forecastDaily: '',
-    language: 'en',
-    useCurrentLocation: true,
-    currentLocationEnabled: true,
+    language: initLanguage,
+    isCurrentLocation: true,
     isLoading: false,
     responseError: ''
   },
@@ -32,11 +40,8 @@ export default createStore({
     language(state) {
       return state.language;
     },
-    useCurrentLocation(state) {
-      return state.useCurrentLocation;
-    },
-    currentLocationEnabled(state) {
-      return state.currentLocationEnabled;
+    isCurrentLocation(state) {
+      return state.isCurrentLocation;
     },
     isLoading(state) {
       return state.isLoading;
@@ -60,11 +65,8 @@ export default createStore({
     setLanguage(state, language) {
       state.language = language;
     },
-    setUseCurrentLocation(state, useCurrentLocation) {
-      state.useCurrentLocation = useCurrentLocation;
-    },
-    setCurrentLocationEnabled(state, currentLocationEnabled) {
-      state.currentLocationEnabled = currentLocationEnabled;
+    setIsCurrentLocation(state, isCurrentLocation) {
+      state.isCurrentLocation = isCurrentLocation;
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;

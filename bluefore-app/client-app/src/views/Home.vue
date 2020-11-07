@@ -4,7 +4,7 @@
       <div id="location-search">
         <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
-        <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="currentLocationHandler()">
+        <button class="my-location" :disabled="isCurrentLocation" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
         </button>
       </div>
@@ -59,7 +59,6 @@ export default {
       sunrise: '',
       sunset: '',
       chosenLocation: '',
-      isUseCurrentLocation: '',
       responseErrorMessage: ''
     }
   },
@@ -67,23 +66,30 @@ export default {
     const routeLocation = this.$route.params.location;
 
     if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
-      REQUESTS.updateWeatherData({location: routeLocation});
-      this.chosenLocation = routeLocation;
-      this.isUseCurrentLocation = false;
+      this.requestUpdateByLocation(routeLocation);
     } else {
       GEOLOCATION.updateLocation();
-      this.isUseCurrentLocation = true;
+      this.setIsCurrentLocation(true);
     }
   },
   watch: {
     currentWeather() {
       this.updateCurrentWeatherData();
     },
-    isUseCurrentLocation(val) {
-      this.setUseCurrentLocation(val);
+    isCurrentLocation(val) {
       if(val) {
         this.chosenLocation = '';
         GEOLOCATION.updateLocation();
+      }
+    },
+    // language change
+    language() {
+      if(!this.responseError) {
+        if(this.isCurrentLocation) {
+          GEOLOCATION.updateLocation();
+        } else {
+          this.requestUpdateByLocation(this.location);
+        }
       }
     },
     responseError(error) {
@@ -104,13 +110,25 @@ export default {
         'location',
         'currentWeather',
         'responseError',
-        'currentLocationEnabled'
+        'isCurrentLocation',
+        'language'
         ]),
   },
   methods: {
     ...mapMutations([
-        'setUseCurrentLocation'
+        'setIsCurrentLocation'
         ]),
+    requestUpdateByLocation(location) {
+        REQUESTS.updateWeatherData({location}).then(() => {
+          if(!this.responseError) {
+            this.chosenLocation = this.location;
+            this.$router.push(`/${this.chosenLocation}`);
+          } else {
+            this.$router.push('/');
+          }
+          this.setIsCurrentLocation(false);
+        });
+    },
     updateCurrentWeatherData() {
         if(this.timerInterval) {
             clearInterval(this.timerInterval);
@@ -134,27 +152,22 @@ export default {
             }, 1000);
         }
     },
-    locationChangeHandler(event) {
+    async locationChangeHandler(event) {
       if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase() || this.responseError) {
 
-        this.isUseCurrentLocation = false;
+        await this.requestUpdateByLocation(this.chosenLocation);
 
-        REQUESTS.updateWeatherData({location: this.chosenLocation}).then(() => {
-          if(!this.responseError) {
-            this.chosenLocation = this.location;
-            this.$router.push(`/${this.chosenLocation}`);
-          } else {
-            event.target.focus();
-          }
-        });
-        
+        if(this.responseError) {
+          event?.target.focus();
+        }
+
         $('html, body').animate({scrollTop: 0}, 500);
       }
 
-      event.target.blur();
+      event?.target.blur();
     },
     currentLocationHandler() {
-      this.isUseCurrentLocation = true;
+      this.setIsCurrentLocation(true);
       this.$router.push(`/`);
     }
   }

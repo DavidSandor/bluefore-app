@@ -5,7 +5,7 @@ export default {
     updateLocation() {
         const onDisabledGeolocation = () => {
             REQUESTS.updateWeatherData({location: 'Budapest'});
-            store.commit('setCurrentLocationEnabled', false);
+            store.commit('setIsCurrentLocation', true);
         }
 
         navigator.permissions.query({name:'geolocation'}).then(result => {
@@ -17,7 +17,7 @@ export default {
                 if(result.state !== 'granted') {
                     onDisabledGeolocation();
                 } else {
-                    store.commit('setCurrentLocationEnabled', true);
+                    store.commit('setIsCurrentLocation', false);
                 }
               }
         })

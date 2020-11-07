@@ -41,11 +41,6 @@ export default {
   unmounted() {
     window.removeEventListener("resize", this.windowResizeHandler);
   },
-  watch: {
-    language(val) {
-      REQUESTS.updateWeatherData({latitude: this.coordinates.lat, longitude: this.coordinates.lon});
-    }
-  },
   computed: {
   ...mapGetters([
         'language',
@@ -60,6 +55,7 @@ export default {
     languageClickHandler(lang) {
       this.setLanguage(lang);
       this.isMenuShown = window.innerWidth > 700;
+      localStorage.setItem('language', lang);
     },
     windowResizeHandler(e) {
       this.isMenuShown = e.target.innerWidth > 700;
