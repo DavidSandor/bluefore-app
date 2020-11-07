@@ -2,14 +2,14 @@
     <div id="home-panel">
 
       <div id="location-search">
-        <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)">
+        <input v-model="chosenLocation" type="text" placeholder="search location" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
         <button class="my-location" :disabled="isUseCurrentLocation || !currentLocationEnabled" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
         </button>
       </div>
 
-      <template v-if="!isRequestError">
+      <template v-if="!responseError">
         <div id="date-time-panel">
           <p class="mobile-hide">{{localDay}}</p>
           <p class="mobile-hide">{{localDate}}</p>
@@ -28,7 +28,7 @@
         <forecast-daily></forecast-daily>
       </template>
       <template v-else>
-        <p class="response-error">Sorry, something went wrong during weather request!</p>
+        <p class="response-error">{{responseErrorMessage}}</p>
       </template>
     </div>
 </template>
@@ -60,6 +60,7 @@ export default {
       sunset: '',
       chosenLocation: '',
       isUseCurrentLocation: '',
+      responseErrorMessage: ''
     }
   },
   created() {
@@ -84,13 +85,25 @@ export default {
         this.chosenLocation = '';
         GEOLOCATION.updateLocation();
       }
+    },
+    responseError(error) {
+      if(error) {
+        switch(error.status) {
+          case 404:
+            this.responseErrorMessage = "Sorry your requested location was not found!";
+            break;
+          default:
+            this.responseErrorMessage = "Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!";
+            break;
+        }
+      }
     }
   },
   computed: {
   ...mapGetters([
         'location',
         'currentWeather',
-        'isRequestError',
+        'responseError',
         'currentLocationEnabled'
         ]),
   },
@@ -122,13 +135,17 @@ export default {
         }
     },
     locationChangeHandler(event) {
-      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase()) {
+      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase() || this.responseError) {
 
         this.isUseCurrentLocation = false;
 
         REQUESTS.updateWeatherData({location: this.chosenLocation}).then(() => {
-          this.chosenLocation = this.location;
-          this.$router.push(`/${this.chosenLocation}`);
+          if(!this.responseError) {
+            this.chosenLocation = this.location;
+            this.$router.push(`/${this.chosenLocation}`);
+          } else {
+            event.target.focus();
+          }
         });
         
         $('html, body').animate({scrollTop: 0}, 500);
@@ -179,6 +196,10 @@ export default {
 
     &:focus {
       background-color: lighten($color-secondary, 45);
+    }
+
+    &.error {
+      background-color: lighten(red, 40);
     }
 
     @media all and (max-width: $screen-sm-width) {

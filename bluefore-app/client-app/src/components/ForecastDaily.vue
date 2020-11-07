@@ -45,6 +45,9 @@ export default {
         'currentWeather'
         ]),
     },
+    created() {
+        this.setMinMaxTemp(this.forecastDaily);
+    },
     methods: {
         convertDay(date) {
             return DATE_HELPER.getWeekday((new Date(date)).getUTCDay());

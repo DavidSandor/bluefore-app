@@ -35,6 +35,9 @@ export default {
         'currentWeather'
         ]),
     },
+    created() {
+        this.setMinMaxTemp(this.forecastHourly);
+    },
     methods: {
         convertHour(date) {
             return DATE_HELPER.convertToHourFormat(new Date(date));

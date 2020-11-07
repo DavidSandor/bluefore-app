@@ -24,9 +24,9 @@ export default {
             store.commit('setForecastHourly', forecastWeather.forecastHourly);
             store.commit('setForecastDaily', forecastWeather.forecastDaily);
 
-            store.commit('setIsRequestError', false);
+            store.commit('setResponseError', null);
         } catch (error) {
-            store.commit('setIsRequestError', true);
+            store.commit('setResponseError', error.response);
         } finally {
             store.commit('setIsLoading', false);
         }
