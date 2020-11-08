@@ -11,15 +11,15 @@ export default {
             let forecastWeather = {}
 
             if(params.location) {
-                currentWeather = (await axios.get(`api/current-weather/${params.location}?lang=${store.getters.language}`)).data;
+                currentWeather = (await axios.get(`api/current-weather/${params.location}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
             } else if(params.latitude !== undefined && params.longitude !== undefined) {
-                currentWeather = (await axios.get(`api/current-weather/${params.latitude}/${params.longitude}?lang=${store.getters.language}`)).data;
+                currentWeather = (await axios.get(`api/current-weather/${params.latitude}/${params.longitude}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
             }
 
             store.commit('setCurrentWeather', currentWeather);
 
             // Updating forecast after current weather
-            forecastWeather = (await axios.get(`api/forecast-weather/${currentWeather.coordinates.lat}/${currentWeather.coordinates.lon}?lang=${store.getters.language}`)).data;
+            forecastWeather = (await axios.get(`api/forecast-weather/${currentWeather.coordinates.lat}/${currentWeather.coordinates.lon}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
 
             store.commit('setForecastHourly', forecastWeather.forecastHourly);
             store.commit('setForecastDaily', forecastWeather.forecastDaily);

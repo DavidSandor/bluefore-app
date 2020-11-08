@@ -93,6 +93,16 @@ export default {
         }
       }
     },
+    // units change
+    units() {
+      if(!this.responseError) {
+        if(this.isCurrentLocation) {
+          GEOLOCATION.updateLocation();
+        } else {
+          this.requestUpdateByLocation(this.location);
+        }
+      }
+    },
     responseError(error) {
       if(error) {
         switch(error.status) {
@@ -112,7 +122,8 @@ export default {
         'currentWeather',
         'responseError',
         'isCurrentLocation',
-        'language'
+        'language',
+        'units'
         ]),
   },
   methods: {

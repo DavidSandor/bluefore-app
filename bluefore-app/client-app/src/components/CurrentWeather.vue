@@ -11,7 +11,7 @@
             <p><span>max</span>{{toDegreeFormat(currentWeather.maxTemperature)}}</p>
             <p><span>{{TRANSLATE('humidity', language)}}</span>{{currentWeather.humidity}}%</p>
             <p><span>min</span>{{toDegreeFormat(currentWeather.minTemperature)}}</p>
-            <p><span>{{TRANSLATE('wind', language)}}</span>{{TRANSLATE(toWindDirection(currentWeather.wind?.deg), language)}} {{toWindSpeed(currentWeather.wind?.speed)}} km/h</p>
+            <p><span>{{TRANSLATE('wind', language)}}</span>{{TRANSLATE(toWindDirection(currentWeather.wind?.deg), language)}} {{toWindSpeed(currentWeather.wind?.speed)}}</p>
         </div>
     </div>
 </template>

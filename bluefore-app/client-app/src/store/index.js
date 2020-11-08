@@ -9,6 +9,15 @@ const initLanguage = (() => {
   }
 })();
 
+// Determine initial data units
+const initUnits = (() => {
+  if(localStorage.getItem('units')) {
+    return localStorage.getItem('units');
+  } else {
+    return 'metric';
+  }
+})();
+
 export default createStore({
   state: {
     location: '',
@@ -19,7 +28,8 @@ export default createStore({
     language: initLanguage,
     isCurrentLocation: true,
     isLoading: false,
-    responseError: ''
+    responseError: '',
+    units: initUnits
   },
   getters: {
     location(state) {
@@ -48,6 +58,9 @@ export default createStore({
     },
     responseError(state) {
       return state.responseError;
+    },
+    units(state) {
+      return state.units;
     }
   },
   mutations: {
@@ -64,6 +77,7 @@ export default createStore({
     },
     setLanguage(state, language) {
       state.language = language;
+      localStorage.setItem('language', language);
     },
     setIsCurrentLocation(state, isCurrentLocation) {
       state.isCurrentLocation = isCurrentLocation;
@@ -74,6 +88,10 @@ export default createStore({
     setResponseError(state, responseError) {
       state.responseError = responseError;
     },
+    setUnits(state, units) {
+      state.units = units;
+      localStorage.setItem('units', units);
+    }
   },
   actions: {
   },

@@ -12,8 +12,9 @@ router.get('/api/current-weather/:lat/:lon', (req, res) => {
 
     // Query params
     const language = req.query.lang;
+    const units = req.query.units;
 
-    sendCurrentWeatherResponse({latitude, longitude, language}, res);
+    sendCurrentWeatherResponse({latitude, longitude, language, units}, res);
 });
 
 router.get('/api/current-weather/:loc', (req, res) => {
@@ -22,12 +23,13 @@ router.get('/api/current-weather/:loc', (req, res) => {
 
     // Query params
     const language = req.query.lang;
+    const units = req.query.units;
 
-    sendCurrentWeatherResponse({location, language}, res);
+    sendCurrentWeatherResponse({location, language, units}, res);
 });
 
 const sendCurrentWeatherResponse = (args, res) => {
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${args.location || ''}&lat=${args.latitude || ''}&lon=${args.longitude || ''}&units=metric&lang=${args.language || ''}&appid=${environment.WEATHER_API_KEY}`).then(currentWeather => {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${args.location || ''}&lat=${args.latitude || ''}&lon=${args.longitude || ''}&units=${args.units || 'metric'}&lang=${args.language || ''}&appid=${environment.WEATHER_API_KEY}`).then(currentWeather => {
         res.json(new CurrentWeather(currentWeather.data));
     }).catch(err => {
         res.status(err.response.status).send(err.response.data);

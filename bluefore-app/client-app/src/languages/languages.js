@@ -23,6 +23,10 @@ const languages = {
         en: 'wind',
         hu: 'szél'
     },
+    N: {
+        en: 'N',
+        hu: 'É'
+    },
     NE: {
         en: 'NE',
         hu: 'ÉK'

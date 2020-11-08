@@ -12,9 +12,10 @@
         <img id="responsive-menu-button" src="./assets/icons/menu.svg" @click="this.isMenuShown = !this.isMenuShown" />
       </div>
     </div>
-    <div v-if="isMenuShown" id="language-panel">
+    <div v-if="isMenuShown" id="menu-panel">
       <img v-if="language !== 'hu'" @click="() => languageClickHandler('hu')" src="./assets/icons/hungary.svg" />
       <img v-if="language !== 'en'" @click="() => languageClickHandler('en')" src="./assets/icons/uk.svg" />
+      <div id="unit-type" @click="unitsClickHandler">{{units === 'metric' ? '°F' : '°C'}}</div>
     </div>
     <router-view/>
   </div>
@@ -47,13 +48,15 @@ export default {
   ...mapGetters([
         'language',
         'coordinates',
-        'isLoading'
+        'isLoading',
+        'units'
         ]),
   },
   methods: {
     ...mapMutations([
         'setLanguage',
-        'setIsCurrentLocation'
+        'setIsCurrentLocation',
+        'setUnits'
         ]),
     brandClickHandler() {
       this.$router.push('/');
@@ -63,7 +66,10 @@ export default {
     languageClickHandler(lang) {
       this.setLanguage(lang);
       this.isMenuShown = window.innerWidth > 700;
-      localStorage.setItem('language', lang);
+    },
+    unitsClickHandler() {
+      this.setUnits(this.units === 'metric' ? 'imperial' : 'metric');
+      this.isMenuShown = window.innerWidth > 700;
     },
     windowResizeHandler(e) {
       this.isMenuShown = e.target.innerWidth > 700;
@@ -97,7 +103,7 @@ body {
   }
 }
 
-#language-panel {
+#menu-panel {
   position: absolute;
   right: 0;
   top: $nav-height;
@@ -119,6 +125,22 @@ body {
     width: 34px;
     box-shadow: $shadow-container;
     border-radius: $radius-full;
+    cursor: pointer;
+  }
+
+  #unit-type {
+    background-color: white;
+    border-radius: $radius-full;
+    width: 34px;
+    height: 34px;
+    box-shadow: $shadow-container;
+    line-height: 34px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: $color-primary;
+    padding-top: 2px;
     cursor: pointer;
   }
 }

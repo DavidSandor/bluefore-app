@@ -11,7 +11,7 @@
                 <hr>
                 <div class="dw-rain-wind">                    
                     <p v-if="forecast.rainVolume"><img src="../assets/icons/drops.svg" />{{forecast.rainVolume.toFixed(1)}} mm</p>
-                    <p v-if="forecast.windSpeed"><img src="../assets/icons/wind.svg" />{{toWindSpeed(forecast.windSpeed)}} km/h</p>
+                    <p v-if="forecast.windSpeed"><img src="../assets/icons/wind.svg" />{{toWindSpeed(forecast.windSpeed)}}</p>
                 </div>
                 <div class="dw-temperature-meters">
                     <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature.max)}%`}">

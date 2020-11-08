@@ -1,6 +1,8 @@
+import store from '@/store/index';
+
 export default {
     toDegreeFormat(value) {
-        return `${Math.round(value)} °C`;
+        return `${Math.round(value)} ${store.getters.units === 'metric' ? '°C' : '°F'}`;
     },
     convertWindDeg(degree) {
         const degrees = {
@@ -50,6 +52,10 @@ export default {
         return windDirection;
     },
     convertWindSpeed(speed) {
-        return Math.round(speed * 3.6);
+        if(store.getters.units === 'metric') {
+            return `${Math.round(speed * 3.6)} km/h`;
+        } else {
+            return `${Math.round(speed)} mi/h`;
+        }
     }
 }
