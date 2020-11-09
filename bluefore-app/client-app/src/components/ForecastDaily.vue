@@ -37,7 +37,7 @@ import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            maxOfAllTemp: -100
+            maxOfAllTemp: -1000
         }
     },
     computed: {
@@ -67,11 +67,11 @@ export default {
             return WEATHER_HELPER.convertWindSpeed(value);
         },
         getTemperatureMeterValue(temp) {
-            const percentage = Math.round(temp) / Math.round(this.maxOfAllTemp) * 100;
+            const percentage = 100 - ((Math.round(this.maxOfAllTemp) - Math.round(temp)) * 5);
             return percentage < 25 ? 25 : percentage;
         },
         setMinMaxTemp(forecastHourly) {
-            this.maxOfAllTemp = -100;
+            this.maxOfAllTemp = -1000;
 
             for (const key in forecastHourly) {
                 if (forecastHourly.hasOwnProperty(key)) {

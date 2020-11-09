@@ -27,7 +27,7 @@ import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            maxTemp: -100
+            maxTemp: -1000
         }
     },
     computed: {
@@ -52,11 +52,11 @@ export default {
             return WEATHER_HELPER.toDegreeFormat(deg);
         },
         getTemperatureMeterValue(temp) {
-            const percentage = Math.round(temp) / Math.round(this.maxTemp) * 100;
+            const percentage = 100 - ((Math.round(this.maxTemp) - Math.round(temp)) * 10);
             return percentage < 20 ? 20 : percentage;
         },
         setMinMaxTemp(forecastHourly) {
-            this.maxTemp = -100;
+            this.maxTemp = -1000;
 
             for (const key in forecastHourly) {
                 if (forecastHourly.hasOwnProperty(key)) {
@@ -233,6 +233,9 @@ export default {
                 font-weight: bold;
 
                 @media all and (max-width: $screen-sm-width) {
+                    position: absolute;
+                    right: 0;
+                    width: 100px;
                     font-size: 20px;
                     text-align: right;
                     padding-right: 5px;
