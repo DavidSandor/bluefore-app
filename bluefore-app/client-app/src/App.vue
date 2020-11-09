@@ -1,29 +1,35 @@
 <template>
   <div>
-    <div id="nav">
-      <div id="nav-inner">
-        <h1 @click="brandClickHandler">
-          <span>blue</span>fore
-          <img id="brand-icon" src="./assets/icons/sunny.svg" />
-        </h1>
-        <transition name="fade">
-          <scale-loader v-if="isLoading" :color="'#008FFE'"></scale-loader>
-        </transition>
-        <img id="responsive-menu-button" src="./assets/icons/menu.svg" @click="this.isMenuShown = !this.isMenuShown" />
+    <div id="page-content-wrapper">
+      <div id="nav">
+        <div id="nav-inner">
+          <h1 @click="brandClickHandler">
+            <span>blue</span>fore
+            <img id="brand-icon" src="./assets/icons/sunny.svg" />
+          </h1>
+          <transition name="fade">
+            <scale-loader v-if="isLoading" :color="'#008FFE'"></scale-loader>
+          </transition>
+          <img id="responsive-menu-button" src="./assets/icons/menu.svg" @click="this.isMenuShown = !this.isMenuShown" />
+        </div>
       </div>
+      <div v-if="isMenuShown" id="menu-panel">
+        <img v-if="language !== 'hu'" @click="() => languageClickHandler('hu')" src="./assets/icons/hungary.svg" />
+        <img v-if="language !== 'en'" @click="() => languageClickHandler('en')" src="./assets/icons/uk.svg" />
+        <div id="unit-type" @click="unitsClickHandler">{{units === 'metric' ? '°F' : '°C'}}</div>
+      </div>
+      <router-view/>
     </div>
-    <div v-if="isMenuShown" id="menu-panel">
-      <img v-if="language !== 'hu'" @click="() => languageClickHandler('hu')" src="./assets/icons/hungary.svg" />
-      <img v-if="language !== 'en'" @click="() => languageClickHandler('en')" src="./assets/icons/uk.svg" />
-      <div id="unit-type" @click="unitsClickHandler">{{units === 'metric' ? '°F' : '°C'}}</div>
-    </div>
-    <router-view/>
+    <footer id="footer">
+      <p>{{TRANSLATE('Handcrafted with care by David Sandor.', language)}} &copy; {{TRANSLATE('All rights reserved.', language)}}</p>
+    </footer>
   </div>
 </template>
 
 <script>
 
 import REQUESTS from '@/connection/requests';
+import LANGUAGE_HELPER from '@/languages/languages';
 import { mapGetters, mapMutations } from 'vuex';
 import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue';
 import $ from 'jquery';
@@ -73,6 +79,11 @@ export default {
     },
     windowResizeHandler(e) {
       this.isMenuShown = e.target.innerWidth > 700;
+    },
+    TRANSLATE(word, language) {
+        if(word && language) {
+            return LANGUAGE_HELPER(word, language);
+        }
     }
   }
 }
@@ -88,6 +99,35 @@ body {
    font-family: $font-primary, $font-backup;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+   position: relative;
+   min-height: 100vh;
+}
+
+#page-content-wrapper {
+  padding-bottom: $footer-height;
+
+    @media all and (max-width: $screen-lg-width) {
+      padding-bottom: $footer-height * 2;
+    }
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: lighten($color-primary, 42);
+
+  p {
+    margin: 0;
+    line-height: $footer-height;
+    font-size: 12px;
+    text-align: right;
+    padding: 0 $space-primary;
+
+    @media all and (max-width: $screen-lg-width) {
+      text-align: center;
+    }
+  }
 }
 
 #responsive-menu-button {

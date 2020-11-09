@@ -110,7 +110,6 @@ export default {
 <style scoped lang="scss">
 .daily-weather-panel {
     margin: $space-secondary 0;
-    margin-bottom: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -119,7 +118,6 @@ export default {
     @media all and (max-width: $screen-lg-width) {
         flex-wrap: wrap;
         justify-content: center;
-        margin-bottom: $space-primary;
     }
 
     @media all and (max-width: $screen-sm-width) {

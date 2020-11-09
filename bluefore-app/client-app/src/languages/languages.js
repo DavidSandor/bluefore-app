@@ -63,6 +63,14 @@ const languages = {
         en: 'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!',
         hu: 'Hiba történt az időjárás adatok lekérése közben! Kérlek ellenőrizd az internetkapcsolatod!'
     },
+    'Handcrafted with care by David Sandor.': {
+        en: 'Handcrafted with care by David Sandor.',
+        hu: 'Az oldalt kellő törődéssel készítette Sándor Dávid.'
+    },
+    'All rights reserved.': {
+        en: 'All rights reserved.',
+        hu: 'Minden jog fenntartva.'
+    },
     today: {
         en: 'today',
         hu: 'ma'
