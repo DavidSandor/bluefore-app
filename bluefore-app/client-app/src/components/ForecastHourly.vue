@@ -5,10 +5,10 @@
                 <p class="hw-day">{{TRANSLATE(convertToday(forecast.dateTime + forecast.timezoneOffset), language)}}</p>
                 <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
-            <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast.weatherConditionId)" />
+            <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast)" />
             <p v-if="forecast.precipitationProbability" class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
             <div class="hw-temperature-meter">
-                <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature)}%`}">
+                <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature)}%`, width: `${getTemperatureMeterValue(forecast.temperature)}%`}">
                     <p class="hw-temperature">{{toDegreeFormat(forecast.temperature)}}</p>
                 </div>
             </div>
@@ -34,6 +34,7 @@ export default {
     ...mapGetters([
         'forecastHourly',
         'currentWeather',
+        'forecastDaily',
         'language'
         ]),
     },
@@ -66,12 +67,24 @@ export default {
                 }
             }
         },
-        toIconUrl(id) {
-            const isNight = DATE_HELPER.convertToIsNight(new Date(this.currentWeather.sunrise), new Date(this.currentWeather.sunset), new Date());
-            return ICON_HELPER.getIcon(id, isNight, false);
+        toIconUrl(forecast) {
+            const isTomorrow = this.convertToday(forecast.dateTime + forecast.timezoneOffset) === 'tomorrow';
+
+            let sunrise = this.currentWeather.sunrise;
+            let sunset = this.currentWeather.sunset;
+
+            // consider sunrise and sunset of tomorrow
+            if(isTomorrow) {
+                sunrise = this.forecastDaily[0].sunrise;
+                sunset = this.forecastDaily[0].sunset;
+            }
+
+            const isNight = DATE_HELPER.convertToIsNight(new Date(sunrise), new Date(sunset), new Date(forecast.dateTime));
+
+            return ICON_HELPER.getIcon(forecast.weatherConditionId, isNight, false);
         },
-        getIconUrl(id) {
-            return require(`../assets/icons/${this.toIconUrl(id)}`);
+        getIconUrl(forecast) {
+            return require(`../assets/icons/${this.toIconUrl(forecast)}`);
         },
         TRANSLATE(word, language) {
             if(word && language) {
@@ -171,7 +184,9 @@ export default {
         color: $font-color-light;
 
         @media all and (max-width: $screen-sm-width) {
-            padding-top: 16px;
+            padding-top: 18px;
+            margin-right: 50%;
+            transform: translateX(50%);
         }
 
         img {
@@ -190,7 +205,10 @@ export default {
         border-radius: $radius-secondary;
 
         @media all and (max-width: $screen-sm-width) {
-            position: static;
+            right: $space-secondary;
+            top: 10px;
+            left: 53%;
+            height: 10px;
         }
 
         .inner-meter {      
@@ -198,14 +216,16 @@ export default {
             padding-top: 10px;
             background-color: rgba($color: $color-primary, $alpha: 0.25);
             position: absolute;
-            left: 0;
-            right: 0;
+            width: 100%;
             bottom: 0;
+            
+            @media all and (min-width: $screen-sm-width + 1px) {
+                width: 100%!important;
+            }
 
             @media all and (max-width: $screen-sm-width) {
-                position: static;
-                background-color: transparent;
                 height: 100%!important;
+                right: 0;
             }
 
             .hw-temperature {
@@ -214,6 +234,10 @@ export default {
 
                 @media all and (max-width: $screen-sm-width) {
                     font-size: 20px;
+                    text-align: right;
+                    padding-right: 5px;
+                    margin: 0;
+                    margin-top: 12px;
                 }
             }
         }

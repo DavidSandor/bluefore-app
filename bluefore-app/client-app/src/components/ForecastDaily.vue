@@ -88,8 +88,7 @@ export default {
             }
         },
         toIconUrl(id) {
-            const isNight = DATE_HELPER.convertToIsNight(new Date(this.currentWeather.sunrise), new Date(this.currentWeather.sunset), new Date());
-            return ICON_HELPER.getIcon(id, isNight, false);
+            return ICON_HELPER.getIcon(id, false, false);
         },
         getIconUrl(id) {
             return require(`../assets/icons/${this.toIconUrl(id)}`);
