@@ -2,7 +2,7 @@
     <div class="hourly-weather-panel">
         <div class="hourly-weather" v-for="forecast in forecastHourly" :key="forecast.dateTime">
             <div class="hw-day-hour">
-                <p class="hw-day">{{TRANSLATE(convertToday(forecast.dateTime + forecast.timezoneOffset), language)}}</p>
+                <p class="hw-day">{{TRANSLATE(convertToday(forecast), language)}}</p>
                 <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
             <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast)" />
@@ -46,7 +46,7 @@ export default {
             return DATE_HELPER.convertToHourFormat(new Date(date));
         },
         convertToday(date) {
-            return (new Date(date)).getUTCDate() > (new Date().getUTCDate()) ? 'tomorrow' : 'today';
+            return (new Date(date.dateTime + date.timezoneOffset)).getUTCDate() > (new Date(Date.now() + date.timezoneOffset).getUTCDate()) ? 'tomorrow' : 'today';
         },
         toDegreeFormat(deg) {
             return WEATHER_HELPER.toDegreeFormat(deg);
@@ -68,7 +68,7 @@ export default {
             }
         },
         toIconUrl(forecast) {
-            const isTomorrow = this.convertToday(forecast.dateTime + forecast.timezoneOffset) === 'tomorrow';
+            const isTomorrow = this.convertToday(forecast) === 'tomorrow';
 
             let sunrise = this.currentWeather.sunrise;
             let sunset = this.currentWeather.sunset;
