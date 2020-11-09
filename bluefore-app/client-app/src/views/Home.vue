@@ -68,6 +68,7 @@ export default {
 
     if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
       this.requestUpdateByLocation(routeLocation);
+      GEOLOCATION.checkGeolocation();
     } else {
       GEOLOCATION.updateLocation();
     }
@@ -266,7 +267,7 @@ export default {
     }
 
     img {
-      height: 22px;
+      width: 100%;
     }
 
     &:disabled {

@@ -39,5 +39,14 @@ export default {
             onDisabledGeolocation();
             console.log('Geolocation is not supported by this browser.');
         }
+    },
+    checkGeolocation() {
+        navigator.permissions.query({name:'geolocation'}).then(result => {
+            if(result.state !== 'granted') {
+                store.commit('setGeolocationEnabled', false);
+            } else {
+                store.commit('setGeolocationEnabled', true);
+            }
+        });
     }
 }
