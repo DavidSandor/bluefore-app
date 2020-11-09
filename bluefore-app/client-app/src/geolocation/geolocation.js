@@ -5,26 +5,29 @@ export default {
     updateLocation() {
         const onDisabledGeolocation = () => {
             REQUESTS.updateWeatherData({location: 'Budapest'});
-            store.commit('setIsCurrentLocation', true);
+            store.commit('setGeolocationEnabled', false);
         }
 
         navigator.permissions.query({name:'geolocation'}).then(result => {
             if(result.state !== 'granted') {
                 onDisabledGeolocation();
+            } else {
+                store.commit('setGeolocationEnabled', true);
             }
 
             result.onchange = function() {
                 if(result.state !== 'granted') {
                     onDisabledGeolocation();
                 } else {
-                    store.commit('setIsCurrentLocation', false);
+                    store.commit('setGeolocationEnabled', true);
                 }
               }
         })
 
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                REQUESTS.updateWeatherData(
+            store.commit('setGeolocationEnabled', true);
+            navigator.geolocation.getCurrentPosition(position => {
+               REQUESTS.updateWeatherData(
                     {
                         latitude: position.coords.latitude, 
                         longitude: position.coords.longitude

@@ -4,7 +4,7 @@
       <div id="location-search">
         <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
-        <button class="my-location" :disabled="isCurrentLocation" @click="currentLocationHandler()">
+        <button class="my-location" :disabled="!(geolocationEnabled && !isCurrentLocation)" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
         </button>
       </div>
@@ -70,7 +70,6 @@ export default {
       this.requestUpdateByLocation(routeLocation);
     } else {
       GEOLOCATION.updateLocation();
-      this.setIsCurrentLocation(true);
     }
   },
   watch: {
@@ -79,8 +78,8 @@ export default {
     },
     isCurrentLocation(val) {
       if(val) {
+        this.$router.push('/');
         this.chosenLocation = '';
-        GEOLOCATION.updateLocation();
       }
     },
     // language change
@@ -122,6 +121,7 @@ export default {
         'currentWeather',
         'responseError',
         'isCurrentLocation',
+        'geolocationEnabled',
         'language',
         'units'
         ]),
@@ -137,8 +137,8 @@ export default {
             this.$router.push(`/${this.chosenLocation}`);
           } else {
             this.$router.push('/');
+            this.setIsCurrentLocation(false);
           }
-          this.setIsCurrentLocation(false);
         });
     },
     updateCurrentWeatherData() {
@@ -179,8 +179,7 @@ export default {
       event?.target.blur();
     },
     currentLocationHandler() {
-      this.setIsCurrentLocation(true);
-      this.$router.push(`/`);
+      GEOLOCATION.updateLocation();
     },
     TRANSLATE(word, language) {
       if(word && language) {
@@ -268,7 +267,6 @@ export default {
 
     img {
       height: 22px;
-      filter: invert(1);
     }
 
     &:disabled {

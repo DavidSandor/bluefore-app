@@ -1,6 +1,7 @@
 <template>
     <div id="current-weather-panel">
         <div id="current-weather-main">
+            <img class="cw-current-location" v-if="isCurrentLocation" src="../assets/icons/location.svg">
             <p class="cw-location">{{currentWeather.location}}</p>
             <img v-if="currentWeather.weatherConditionId" class="cw-icon" :src="iconUrl" />
             <p class="cw-temperature">{{toDegreeFormat(currentWeather.temperature)}}</p>
@@ -51,7 +52,8 @@ export default {
     computed: {
     ...mapGetters([
         'currentWeather',
-        'language'
+        'language',
+        'isCurrentLocation'
         ]),
         iconUrl() {
             const isNight = this.toIsNight(this.currentWeather.sunrise, this.currentWeather.sunset);
@@ -89,6 +91,17 @@ $current-weather-space: 30px;
 
         p {
             margin: 0;
+        }
+
+        .cw-current-location {
+            width: 30px;
+            padding: 5px;
+            position: absolute;
+            left: $current-weather-space;
+            top: -12px;
+            background-color: $color-secondary;
+            border-radius: $radius-full;
+            box-shadow: $shadow-container;
         }
 
         .cw-location {

@@ -12,8 +12,10 @@ export default {
 
             if(params.location) {
                 currentWeather = (await axios.get(`api/current-weather/${params.location}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
+                store.commit('setIsCurrentLocation', false);
             } else if(params.latitude !== undefined && params.longitude !== undefined) {
                 currentWeather = (await axios.get(`api/current-weather/${params.latitude}/${params.longitude}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
+                store.commit('setIsCurrentLocation', true);
             }
 
             store.commit('setCurrentWeather', currentWeather);

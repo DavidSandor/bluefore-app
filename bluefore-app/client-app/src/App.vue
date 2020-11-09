@@ -29,6 +29,7 @@
 <script>
 
 import REQUESTS from '@/connection/requests';
+import GEOLOCATION from '@/geolocation/geolocation';
 import LANGUAGE_HELPER from '@/languages/languages';
 import { mapGetters, mapMutations } from 'vuex';
 import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue';
@@ -61,13 +62,11 @@ export default {
   methods: {
     ...mapMutations([
         'setLanguage',
-        'setIsCurrentLocation',
         'setUnits'
         ]),
     brandClickHandler() {
-      this.$router.push('/');
-      this.setIsCurrentLocation(true);
       $('html, body').animate({scrollTop: 0}, 500);
+      GEOLOCATION.updateLocation();
     },
     languageClickHandler(lang) {
       this.setLanguage(lang);

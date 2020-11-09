@@ -26,10 +26,11 @@ export default createStore({
     forecastHourly: '',
     forecastDaily: '',
     language: initLanguage,
-    isCurrentLocation: true,
+    isCurrentLocation: false,
     isLoading: false,
     responseError: '',
-    units: initUnits
+    units: initUnits,
+    geolocationEnabled: false
   },
   getters: {
     location(state) {
@@ -61,6 +62,9 @@ export default createStore({
     },
     units(state) {
       return state.units;
+    },
+    geolocationEnabled(state) {
+      return state.geolocationEnabled;
     }
   },
   mutations: {
@@ -91,6 +95,9 @@ export default createStore({
     setUnits(state, units) {
       state.units = units;
       localStorage.setItem('units', units);
+    },
+    setGeolocationEnabled(state, geolocationEnabled) {
+      state.geolocationEnabled = geolocationEnabled;
     }
   },
   actions: {
