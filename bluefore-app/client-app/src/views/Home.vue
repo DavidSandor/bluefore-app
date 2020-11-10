@@ -9,6 +9,8 @@
         </button>
       </div>
 
+      <p v-if="!geolocationEnabled" id="geolocation-disabled">{{TRANSLATE('location_disabled', language)}}</p>
+
       <template v-if="!responseError">
         <div id="date-time-panel">
           <p class="mobile-hide">{{TRANSLATE(localDay, language)}}</p>
@@ -273,6 +275,20 @@ export default {
     &:disabled {
       opacity: 0.4;
     }
+  }
+}
+
+#geolocation-disabled {
+  text-align: center;
+  color: red;
+  font-size: 12px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media all and (max-width: $screen-sm-width) {
+    margin-bottom: 0;
+    padding-top: 5px;
   }
 }
 

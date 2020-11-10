@@ -55,6 +55,10 @@ const languages = {
         en: 'NW',
         hu: 'ÉNY'
     },
+    'location_disabled': {
+        en: 'Please allow location access in your browser settings if you would like to track weather at your location!',
+        hu: 'Kérlek engedélyezd lokációd megosztását a böngésződ beállításaiban, hogy jelenlegi lokációd alapján is követni tudd az időjárást!'
+    },
     'Sorry your requested location was not found!': {
         en: 'Sorry your requested location was not found!',
         hu: 'Sajnos nem található a keresésnek megfelelő lokáció!'
