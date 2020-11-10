@@ -1,9 +1,0 @@
-License subject: Free animated SVG weather icons - https://www.amcharts.com/free-animated-svg-weather-icons/
-
-Author: AMCHARTS - https://www.amcharts.com
-
-The icons used in this folder are under Creative Commons Attribution 4.0 International Public License - https://creativecommons.org/licenses/by/4.0/legalcode
-
-Modifications:
-    - icon names are changed for better use
-    - some icons are not used
