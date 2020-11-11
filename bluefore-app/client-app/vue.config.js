@@ -1,4 +1,5 @@
 module.exports = {
+      outputDir: '../api/spa',
       devServer: {
         proxy: {
           '^/api': {

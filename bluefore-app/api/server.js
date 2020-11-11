@@ -12,10 +12,10 @@ app.use(helmet());
 app.use(currentWeatherRoutes);
 app.use(forecastWeatherRoutes);
 
-app.use(express.static(path.join(__dirname, '../client-app/dist')));
+app.use(express.static(path.join(__dirname, './spa')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client-app/dist/index.html'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './spa/index.html'));
 });
 
 app.listen(environment.PORT || 3080, () => {
