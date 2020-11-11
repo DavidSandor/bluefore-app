@@ -1,10 +1,13 @@
 const express = require('express');
+const helmet = require('helmet');
 const environment = require('./utility/environment');
 const path = require('path');
 const currentWeatherRoutes = require('./routes/current-weather');
 const forecastWeatherRoutes = require('./routes/forecast-weather');
 
 const app = express();
+
+app.use(helmet());
 
 app.use(currentWeatherRoutes);
 app.use(forecastWeatherRoutes);

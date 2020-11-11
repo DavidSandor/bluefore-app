@@ -15,7 +15,7 @@ router.get('/api/forecast-weather/:lat/:lon', (req, res) => {
     const language = req.query.lang;
     const units = req.query.units;
 
-    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude || ''}&lon=${longitude || ''}&exclude=minutely&units=${units || 'metric'}&lang=${language || ''}&appid=${environment.WEATHER_API_KEY}`).then(forecastWeather => {
+    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude || ''}&lon=${longitude || ''}&exclude=current,minutely&units=${units || 'metric'}&lang=${language || ''}&appid=${environment.WEATHER_API_KEY}`).then(forecastWeather => {
 
         const forecastHourly = forecastWeather.data.hourly.filter(
             // 3 hours interval
