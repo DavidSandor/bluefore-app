@@ -21,7 +21,7 @@
       <router-view/>
     </div>
     <footer id="footer">
-      <p>{{TRANSLATE('Handcrafted with care by David Sandor.', language)}} &copy; {{TRANSLATE('All rights reserved.', language)}}</p>
+      <p>{{TRANSLATE('page_creator', language)}} &copy; {{TRANSLATE('copyright', language)}}</p>
     </footer>
   </div>
 </template>

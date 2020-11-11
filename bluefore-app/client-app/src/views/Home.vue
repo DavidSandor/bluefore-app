@@ -2,7 +2,7 @@
     <div id="home-panel">
 
       <div id="location-search">
-        <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
+        <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search_location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
         <button class="my-location" :disabled="!(geolocationEnabled && !isCurrentLocation)" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
@@ -15,7 +15,7 @@
         <div id="date-time-panel">
           <p class="mobile-hide">{{TRANSLATE(localDay, language)}}</p>
           <p class="mobile-hide">{{localDate}}</p>
-          <p><span><img id="clock-icon" src="../assets/icons/clock.svg" /><span class="mobile-hide">{{TRANSLATE('local time', language)}}</span></span>{{localTime}}</p>
+          <p><span><img id="clock-icon" src="../assets/icons/clock.svg" /><span class="mobile-hide">{{TRANSLATE('local_time', language)}}</span></span>{{localTime}}</p>
           <p><span><img src="../assets/icons/wi-sunrise.svg" /><span class="mobile-hide">{{TRANSLATE('sunrise', language)}}</span></span>{{sunrise}}</p>
           <p><span><img src="../assets/icons/wi-sunset.svg" /><span class="mobile-hide">{{TRANSLATE('sunset', language)}}</span></span>{{sunset}}</p>
         </div>
@@ -109,10 +109,10 @@ export default {
       if(error) {
         switch(error.status) {
           case 404:
-            this.responseErrorMessage = 'Sorry your requested location was not found!';
+            this.responseErrorMessage = 'location_not_found';
             break;
           default:
-            this.responseErrorMessage = 'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!';
+            this.responseErrorMessage = 'request_error';
             break;
         }
       }

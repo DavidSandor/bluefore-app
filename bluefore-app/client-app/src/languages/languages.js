@@ -1,9 +1,9 @@
 const languages = {
-    'search location': {
+    search_location: {
         en: 'search location',
-        hu: 'lokáció keresése'
+        hu: 'keress lokációra'
     },
-    'local time': {
+    local_time: {
         en: 'local time',
         hu: 'helyi idő'
     },
@@ -55,23 +55,23 @@ const languages = {
         en: 'NW',
         hu: 'ÉNY'
     },
-    'location_disabled': {
+    location_disabled: {
         en: 'Please allow location access in your browser settings if you would like to track weather at your location!',
-        hu: 'Kérlek engedélyezd lokációd megosztását a böngésződ beállításaiban, hogy jelenlegi lokációd alapján is követni tudd az időjárást!'
+        hu: 'Kérlek engedélyezd lokációd megosztását a böngésződ beállításaiban, hogy jelenlegi lokációdon is követni tudd az időjárást!'
     },
-    'Sorry your requested location was not found!': {
+    location_not_found: {
         en: 'Sorry your requested location was not found!',
         hu: 'Sajnos nem található a keresésnek megfelelő lokáció!'
     },
-    'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!': {
+    request_error: {
         en: 'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!',
         hu: 'Hiba történt az időjárás adatok lekérése közben! Kérlek ellenőrizd az internetkapcsolatod!'
     },
-    'Handcrafted with care by David Sandor.': {
+    page_creator: {
         en: 'Handcrafted with care by David Sandor.',
-        hu: 'Az oldalt kellő törődéssel készítette Sándor Dávid.'
+        hu: 'Az oldal alkotója Sándor Dávid.'
     },
-    'All rights reserved.': {
+    copyright: {
         en: 'All rights reserved.',
         hu: 'Minden jog fenntartva.'
     },
