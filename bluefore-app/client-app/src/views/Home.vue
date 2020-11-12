@@ -9,7 +9,10 @@
         </button>
       </div>
 
-      <p v-if="!geolocationEnabled" id="geolocation-disabled">{{TRANSLATE('location_disabled', language)}}</p>
+      <div v-if="!geolocationEnabled" id="geolocation-disabled">
+        <p>{{TRANSLATE('location_disabled', language)}}</p>
+        <button @click="followWeatherHandler">{{TRANSLATE('follow', language)}}</button>
+      </div>
 
       <template v-if="!responseError">
         <div id="date-time-panel">
@@ -66,14 +69,17 @@ export default {
     }
   },
   created() {
-    const routeLocation = this.$route.params.location;
-
-    if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
-      this.requestUpdateByLocation(routeLocation);
-      GEOLOCATION.checkGeolocation();
-    } else {
-      GEOLOCATION.updateLocation();
-    }
+    (async () => {
+      const routeLocation = this.$route.params.location;
+      await GEOLOCATION.checkGeolocation();
+      console.log(this.geolocationEnabled)
+  
+      if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
+        this.requestUpdateByLocation(routeLocation);
+      } else {
+        GEOLOCATION.updateLocation();
+      }
+    })();
   },
   watch: {
     currentWeather() {
@@ -184,6 +190,9 @@ export default {
     currentLocationHandler() {
       GEOLOCATION.updateLocation();
     },
+    followWeatherHandler() {
+      GEOLOCATION.updateToGeolocation();
+    },
     TRANSLATE(word, language) {
       if(word && language) {
         return LANGUAGE_HELPER(word, language);
@@ -245,7 +254,6 @@ export default {
     width: 34px;
     border: none;
     border-radius: $radius-full;
-
   }
 
   button.search {
@@ -279,16 +287,41 @@ export default {
 }
 
 #geolocation-disabled {
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: $space-primary;
   text-align: center;
-  color: red;
-  font-size: 12px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  background-color: lighten($color-primary, 30);
+  border-radius: $radius-primary;
+  padding: $space-secondary;
 
   @media all and (max-width: $screen-sm-width) {
     margin-bottom: 0;
-    padding-top: 5px;
+    margin-top: 70px;
+    width: 100%;
+  }
+
+  p {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+    display: inline-block;
+
+    @media all and (max-width: $screen-sm-width) {
+      display: block;
+      margin-right: 0;
+    }
+  }
+
+  button {
+    font-size: 14px;
+    padding: 2px 10px;
+    border: none;
+    border-radius: $radius-full;
+    box-shadow: $shadow-container;
+    color: white;
+    background-color: $color-primary;
   }
 }
 

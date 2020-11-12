@@ -2,51 +2,44 @@ import REQUESTS from '@/connection/requests';
 import store from '@/store/index';
 
 export default {
-    updateLocation() {
-        const onDisabledGeolocation = () => {
-            REQUESTS.updateWeatherData({location: 'Budapest'});
-            store.commit('setGeolocationEnabled', false);
-        }
-
-        navigator.permissions.query({name:'geolocation'}).then(result => {
-            if(result.state !== 'granted') {
-                onDisabledGeolocation();
-            } else {
-                store.commit('setGeolocationEnabled', true);
-            }
-
-            result.onchange = function() {
-                if(result.state !== 'granted') {
-                    onDisabledGeolocation();
-                } else {
+    async checkGeolocation() {
+        if(navigator.geolocation) {
+            await navigator.permissions.query({name:'geolocation'}).then(result => {
+                if(result.state === 'granted') {
                     store.commit('setGeolocationEnabled', true);
+                } else {
+                    store.commit('setGeolocationEnabled', false);
                 }
-              }
-        })
+            });
+        }
+    },
+    updateToGeolocation() {
+        if(navigator.geolocation) {
+            navigator.permissions.query({name:'geolocation'}).then(result => {   
+                result.onchange = function() {
+                    if(result.state === 'granted') {
+                        store.commit('setGeolocationEnabled', true);
+                    } else {
+                        store.commit('setGeolocationEnabled', false);
+                    }
+                  }
+            })
 
-        if (navigator.geolocation) {
-            store.commit('setGeolocationEnabled', true);
             navigator.geolocation.getCurrentPosition(position => {
-               REQUESTS.updateWeatherData(
+                REQUESTS.updateWeatherData(
                     {
                         latitude: position.coords.latitude, 
                         longitude: position.coords.longitude
                     }
                 );
             });
-
-        } else {
-            onDisabledGeolocation();
-            console.log('Geolocation is not supported by this browser.');
         }
     },
-    checkGeolocation() {
-        navigator.permissions.query({name:'geolocation'}).then(result => {
-            if(result.state !== 'granted') {
-                store.commit('setGeolocationEnabled', false);
-            } else {
-                store.commit('setGeolocationEnabled', true);
-            }
-        });
+    updateLocation() { 
+        if(store.getters.geolocationEnabled) {
+            this.updateToGeolocation()
+        } else {
+            REQUESTS.updateWeatherData({location: 'Budapest'});
+        }
     }
 }
