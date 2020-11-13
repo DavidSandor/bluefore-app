@@ -4,14 +4,19 @@
       <div id="location-search">
         <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search_location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
         <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
-        <button class="my-location" :disabled="!(geolocationEnabled && !isCurrentLocation)" @click="currentLocationHandler()">
+        <button class="my-location" v-if="(geolocationStatus === 'granted' && !isCurrentLocation)" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
         </button>
       </div>
 
-      <div v-if="!geolocationEnabled" id="geolocation-disabled">
-        <p>{{TRANSLATE('location_disabled', language)}}</p>
-        <button @click="followWeatherHandler">{{TRANSLATE('follow', language)}}</button>
+      <div v-if="geolocationStatus !== 'granted'" id="geolocation-disabled">
+        <template v-if="geolocationStatus === 'prompt'">
+          <p>{{TRANSLATE('location_prompt', language)}}</p>
+          <button @click="followWeatherHandler">{{TRANSLATE('follow', language)}}</button>
+        </template>
+        <template v-else>
+          <p>{{TRANSLATE('location_disabled', language)}}</p>
+        </template>
       </div>
 
       <template v-if="!responseError">
@@ -72,7 +77,6 @@ export default {
     (async () => {
       const routeLocation = this.$route.params.location;
       await GEOLOCATION.checkGeolocation();
-      console.log(this.geolocationEnabled)
   
       if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
         this.requestUpdateByLocation(routeLocation);
@@ -130,7 +134,7 @@ export default {
         'currentWeather',
         'responseError',
         'isCurrentLocation',
-        'geolocationEnabled',
+        'geolocationStatus',
         'language',
         'units'
         ]),
@@ -287,24 +291,21 @@ export default {
 }
 
 #geolocation-disabled {
-  width: 70%;
   margin: 0 auto;
   margin-bottom: $space-primary;
   text-align: center;
   background-color: lighten($color-primary, 30);
   border-radius: $radius-primary;
-  padding: $space-secondary;
+  padding: 10px;
 
   @media all and (max-width: $screen-sm-width) {
     margin-bottom: 0;
     margin-top: 70px;
-    width: 100%;
   }
 
   p {
     margin: 0;
-    margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 10px;
     display: inline-block;
 
@@ -315,7 +316,7 @@ export default {
   }
 
   button {
-    font-size: 14px;
+    font-size: 12px;
     padding: 2px 10px;
     border: none;
     border-radius: $radius-full;

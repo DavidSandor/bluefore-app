@@ -55,9 +55,13 @@ const languages = {
         en: 'NW',
         hu: 'ÉNY'
     },
-    location_disabled: {
+    location_prompt: {
         en: 'Would you like to follow weather info at your location?',
         hu: 'Követnéd az időjárást a saját lokációdon is?'
+    },
+    location_disabled: {
+        en: 'Please allow location access in your browser if you would like to follow weather info at your location!',
+        hu: 'Kérlek engedélyezd a lokáció hozzáférést a böngésződben ha követnéd az időjárást a saját lokációdon is!'
     },
     follow: {
         en: 'follow',

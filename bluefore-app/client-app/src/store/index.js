@@ -30,7 +30,7 @@ export default createStore({
     isLoading: false,
     responseError: '',
     units: initUnits,
-    geolocationEnabled: false
+    geolocationStatus: ''
   },
   getters: {
     location(state) {
@@ -63,8 +63,8 @@ export default createStore({
     units(state) {
       return state.units;
     },
-    geolocationEnabled(state) {
-      return state.geolocationEnabled;
+    geolocationStatus(state) {
+      return state.geolocationStatus;
     }
   },
   mutations: {
@@ -96,8 +96,8 @@ export default createStore({
       state.units = units;
       localStorage.setItem('units', units);
     },
-    setGeolocationEnabled(state, geolocationEnabled) {
-      state.geolocationEnabled = geolocationEnabled;
+    setGeolocationStatus(state, geolocationStatus) {
+      state.geolocationStatus = geolocationStatus;
     }
   },
   actions: {
