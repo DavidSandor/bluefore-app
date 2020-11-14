@@ -27,7 +27,9 @@ export default {
             });
         }
     },
-    updateLocation() { 
+    async updateLocation() {
+        await this.checkGeolocation();
+
         if(store.getters.geolocationStatus === 'granted') {
             this.updateToGeolocation()
         } else {

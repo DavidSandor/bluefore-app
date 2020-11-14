@@ -74,16 +74,14 @@ export default {
     }
   },
   created() {
-    (async () => {
-      const routeLocation = this.$route.params.location;
-      await GEOLOCATION.checkGeolocation();
-  
-      if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
-        this.requestUpdateByLocation(routeLocation);
-      } else {
-        GEOLOCATION.updateLocation();
-      }
-    })();
+    const routeLocation = this.$route.params.location;
+    GEOLOCATION.checkGeolocation();
+
+    if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
+      this.requestUpdateByLocation(routeLocation);
+    } else {
+      GEOLOCATION.updateLocation();
+    }
   },
   watch: {
     currentWeather() {
