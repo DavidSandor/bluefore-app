@@ -18,6 +18,15 @@ const initUnits = (() => {
   }
 })();
 
+// Determine initial geolocation enabled
+const initGeoStatus = (() => {
+  if(sessionStorage.getItem('geoStatus')) {
+    return sessionStorage.getItem('geoStatus');
+  } else {
+    return 'prompt';
+  }
+})();
+
 export default createStore({
   state: {
     location: '',
@@ -30,7 +39,7 @@ export default createStore({
     isLoading: false,
     responseError: '',
     units: initUnits,
-    geolocationStatus: ''
+    geolocationStatus: initGeoStatus
   },
   getters: {
     location(state) {
@@ -98,6 +107,7 @@ export default createStore({
     },
     setGeolocationStatus(state, geolocationStatus) {
       state.geolocationStatus = geolocationStatus;
+      sessionStorage.setItem('geoStatus', geolocationStatus);
     }
   },
   actions: {
