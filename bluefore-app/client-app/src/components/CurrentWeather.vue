@@ -114,7 +114,10 @@ $current-weather-space: 30px;
         }
 
         .cw-icon {
-            width: 130px;
+            // ios blurry svg fix with scale and translate
+            width: 260px;
+            transform: scale(0.5) translate(130px, -130px);
+            
             position: absolute;
             right: 10px;
             top: 10px;
