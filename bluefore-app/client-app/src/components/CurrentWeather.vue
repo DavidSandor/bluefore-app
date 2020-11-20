@@ -1,5 +1,5 @@
 <template>
-    <div id="current-weather-panel">
+    <div id="current-weather-panel" v-if="currentWeather.location">
         <div id="current-weather-main">
             <img class="cw-current-location" v-if="isCurrentLocation" src="../assets/icons/location.svg">
             <p class="cw-location">{{currentWeather.location}}</p>
@@ -117,7 +117,7 @@ $current-weather-space: 30px;
             // ios blurry svg fix with scale and translate
             width: 260px;
             transform: scale(0.5) translate(130px, -130px);
-            
+
             position: absolute;
             right: 10px;
             top: 10px;
