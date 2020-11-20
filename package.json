@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "client": "cd bluefore-app && cd api && npm run start",
+        "server": "cd bluefore-app && cd client-app && npm run serve",
+        "dev": "concurrently \"npm run client\" \"npm run server\""
+    },
+    "devDependencies": {
+        "concurrently": "^5.3.0"
+    }
+}
