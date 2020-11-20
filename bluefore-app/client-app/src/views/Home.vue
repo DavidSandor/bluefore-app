@@ -3,7 +3,9 @@
 
       <div id="location-search">
         <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search_location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
-        <button class="search" @click="locationChangeHandler($event)"><img src="../assets/icons/search.svg" /></button>
+        <button class="search" @click="locationChangeHandler($event)">
+          <img src="../assets/icons/search.svg" />
+        </button>
         <button class="my-location" v-if="(geolocationStatus === 'granted' && !isCurrentLocation)" @click="currentLocationHandler()">
           <img src="../assets/icons/location.svg" />
         </button>
@@ -215,6 +217,7 @@ export default {
   position: absolute;
   right: $space-primary;
   top: -57px;
+  display: flex;
 
   @media all and (max-width: $screen-sm-width) {
     position: fixed;
@@ -222,7 +225,6 @@ export default {
     left: $space-primary;
     padding: $space-secondary;
     top: $nav-height - 10px;
-    display: flex;
     justify-content: space-between;
     background-color: white;
     box-shadow: $shadow-container;
@@ -236,6 +238,7 @@ export default {
     height: 34px;
     padding-left: $space-secondary;
     border-radius: $radius-full;
+    margin-right: -34px;
 
     &:focus {
       background-color: lighten($color-secondary, 45);
@@ -247,6 +250,8 @@ export default {
 
     @media all and (max-width: $screen-sm-width) {
       flex-grow: 1;
+      -webkit-appearance: none;
+      -webkit-box-shadow: $shadow-container;
       box-shadow: $shadow-container;
     }
   }
@@ -256,17 +261,19 @@ export default {
     width: 34px;
     border: none;
     border-radius: $radius-full;
+    position: relative;
   }
 
   button.search {
     background-color: $color-primary;
-    color: white;
-    margin-left: -34px;
 
     img {
-      height: 22px;
+      position: absolute;
+      height: 18px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       filter: invert(1);
-      padding-bottom: 3px;
     }
   }
 
@@ -279,7 +286,11 @@ export default {
     }
 
     img {
-      width: 100%;
+      position: absolute;
+      height: 20px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &:disabled {

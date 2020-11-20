@@ -98,6 +98,7 @@ body {
    font-family: $font-primary, $font-backup;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+   -webkit-appearance: none;
    position: relative;
    min-height: 100vh;
 }
