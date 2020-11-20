@@ -193,6 +193,7 @@ export default {
     },
     currentLocationHandler() {
       GEOLOCATION.updateLocation();
+      $('html, body').animate({scrollTop: 0}, 500);
     },
     followWeatherHandler() {
       GEOLOCATION.updateToGeolocation();
