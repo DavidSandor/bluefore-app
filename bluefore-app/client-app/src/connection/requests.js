@@ -1,6 +1,9 @@
 import axios from 'axios';
 import store from '@/store/index';
 
+// set base url to avoid wrong calls because of custom routes used by vue
+axios.defaults.baseURL = window.location.origin;
+
 export default {
     async updateWeatherData(params) {
 
@@ -10,7 +13,11 @@ export default {
             let currentWeather = {};
             let forecastWeather = {}
 
-            if(params.location) {
+            if(params.id) {
+                currentWeather = (await axios.get(`api/current-weather-by-id/${params.id}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
+                store.commit('setIsCurrentLocation', false);
+            }
+            else if(params.location) {
                 currentWeather = (await axios.get(`api/current-weather/${params.location}?lang=${store.getters.language}&units=${store.getters.units}`)).data;
                 store.commit('setIsCurrentLocation', false);
             } else if(params.latitude !== undefined && params.longitude !== undefined) {
@@ -32,5 +39,8 @@ export default {
         } finally {
             store.commit('setIsLoading', false);
         }
+    },
+    async getCitySearchList(searchBy) {
+        return (await axios.get(`api/cities/${searchBy}`)).data;
     }
 }

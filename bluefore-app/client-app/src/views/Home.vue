@@ -2,7 +2,15 @@
     <div id="home-panel">
 
       <div id="location-search">
-        <input v-model="chosenLocation" type="text" :placeholder="TRANSLATE('search_location', language)" @keyup.enter="locationChangeHandler($event)" :class="{ error: responseError?.status === 404} ">
+        <input v-model="chosenLocation"
+                type="text" 
+                :placeholder="TRANSLATE('search_location', language)" 
+                @keyup.enter="locationChangeHandler($event)" 
+                :class="{ error: responseError?.status === 404 }"
+                @input="locationInputHandler($event, this)">
+        <div id="city-search" v-if="foundCities.length">
+          <p v-for="city in foundCities" :key="city.id" @click="foundCityClickHandler(city)">{{city.name}} <span>({{city.country}}{{city.state ? ` / ${city.state}` : ''}})</span></p>
+        </div>
         <button class="search" @click="locationChangeHandler($event)">
           <img src="../assets/icons/search.svg" />
         </button>
@@ -55,6 +63,7 @@ import REQUESTS from '@/connection/requests';
 import GEOLOCATION from '@/geolocation/geolocation';
 import { mapGetters, mapMutations } from 'vuex';
 import $ from 'jquery';
+import debounce from "lodash/debounce";
 
 export default {
   name: 'Home',
@@ -72,15 +81,21 @@ export default {
       sunrise: '',
       sunset: '',
       chosenLocation: '',
-      responseErrorMessage: ''
+      responseErrorMessage: '',
+      foundCities: []
     }
   },
   created() {
     const routeLocation = this.$route.params.location;
+    const routeLocationId = this.$route.params.id;
+
     GEOLOCATION.checkGeolocation();
 
-    if(routeLocation && routeLocation.toLowerCase() !== this.location.toLowerCase()) {
-      this.requestUpdateByLocation(routeLocation);
+    if(routeLocationId && routeLocation) {
+      this.requestUpdateByLocationId(routeLocationId);
+    }
+    else if(routeLocationId) {
+      this.requestUpdateByLocation(routeLocationId);
     } else {
       GEOLOCATION.updateLocation();
     }
@@ -144,15 +159,34 @@ export default {
         'setIsCurrentLocation'
         ]),
     requestUpdateByLocation(location) {
-        REQUESTS.updateWeatherData({location}).then(() => {
-          if(!this.responseError) {
-            this.chosenLocation = this.location;
-            this.$router.push(`/${this.chosenLocation}`);
-          } else {
-            this.$router.push('/');
-            this.setIsCurrentLocation(false);
-          }
-        });
+      REQUESTS.updateWeatherData({location}).then(() => {
+        if(!this.responseError) {
+          this.chosenLocation = this.location;
+          this.$router.push(`/${this.currentWeather.locationId}/${this.chosenLocation}`);
+        } else {
+          this.$router.push('/');
+          this.setIsCurrentLocation(false);
+        }
+
+        setTimeout(() => {
+          this.foundCities = [];
+        }, 500);
+      });
+    },
+    requestUpdateByLocationId(locationId) {
+      REQUESTS.updateWeatherData({id: locationId}).then(() => {
+        if(!this.responseError) {
+          this.chosenLocation = this.location;
+          this.$router.push(`/${locationId}/${this.chosenLocation}`);
+        } else {
+          this.$router.push('/');
+          this.setIsCurrentLocation(false);
+        }
+
+        setTimeout(() => {
+          this.foundCities = [];
+        }, 500);
+      });
     },
     updateCurrentWeatherData() {
         if(this.timerInterval) {
@@ -178,7 +212,7 @@ export default {
         }
     },
     async locationChangeHandler(event) {
-      if(this.chosenLocation && this.chosenLocation.toLowerCase() !== this.location.toLowerCase() || this.responseError) {
+      if(this.chosenLocation && this.$route.params.location !== this.chosenLocation || this.responseError) {
 
         await this.requestUpdateByLocation(this.chosenLocation);
 
@@ -197,6 +231,16 @@ export default {
     },
     followWeatherHandler() {
       GEOLOCATION.updateToGeolocation();
+    },
+    locationInputHandler: debounce(async (event, self) => {
+        if(event.target.value.length > 2) {
+          self.foundCities = await REQUESTS.getCitySearchList(event.target.value);
+        } else {
+          self.foundCities = [];
+        }
+      }, 500),
+    foundCityClickHandler(city) {
+      this.requestUpdateByLocationId(city.id);
     },
     TRANSLATE(word, language) {
       if(word && language) {
@@ -254,6 +298,40 @@ export default {
       -webkit-appearance: none;
       -webkit-box-shadow: $shadow-container;
       box-shadow: $shadow-container;
+    }
+  }
+
+  #city-search {
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    background-color: white;
+    z-index: 11;
+    padding: $space-secondary;
+    border-radius: $radius-secondary;
+    box-shadow: $shadow-container;
+    
+    @media all and (max-width: $screen-sm-width) {
+      top: 80px;
+      max-height: 50vh;
+      overflow-y: auto;
+    }
+
+    p {
+      margin: 0;
+      cursor: pointer;
+      border-radius: $radius-secondary;
+      padding: 4px 10px;
+
+      &:hover {
+        background-color: lighten($color-primary, 35);
+      }
+
+      span {
+        color: $font-color-light;
+      }
     }
   }
 
