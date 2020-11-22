@@ -6,7 +6,10 @@
                 <p class="hw-hour">{{convertHour(forecast.dateTime + forecast.timezoneOffset)}}</p>
             </div>
             <img v-if="forecast.weatherConditionId" class="hw-icon" :src="getIconUrl(forecast)" />
-            <p v-if="forecast.precipitationProbability" class="hw-precipitation"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}%</p>
+            <div class="hw-precipitation">
+                <p v-if="forecast.precipitationProbability"><img src="../assets/icons/drops.svg" />{{(forecast.precipitationProbability * 100).toFixed(0)}}<span class="unit"> %</span></p>
+                <p v-if="forecast.snowVolume"><img src="../assets/icons/snowflake.svg" />{{(forecast.snowVolume).toFixed(1)}}<span class="unit"> mm</span></p>
+            </div>
             <div class="hw-temperature-meter">
                 <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature)}%`, width: `${getTemperatureMeterValue(forecast.temperature)}%`}">
                     <p class="hw-temperature">{{toDegreeFormat(forecast.temperature)}}</p>
@@ -184,15 +187,31 @@ export default {
         color: $font-color-light;
 
         @media all and (max-width: $screen-sm-width) {
-            padding-top: 18px;
+            padding-top: 10px;
             margin-right: 50%;
             transform: translateX(50%);
+            display: flex;
+        }
+
+        p {
+            margin: 0;
+            margin-bottom: 2px;
+
+            @media all and (max-width: $screen-sm-width) {
+                text-align: center;
+                padding: 0 4px;
+            }
         }
 
         img {
             height: 16px;
             margin-right: 3px;
             margin-bottom: 5px;
+
+            @media all and (max-width: $screen-sm-width) {
+                display: block;
+                margin: 0 auto;
+            }
         }
     }
 
@@ -201,7 +220,7 @@ export default {
         left: 10px;
         right: 10px;
         bottom: 10px;
-        top: 170px;
+        top: 190px;
         border-radius: $radius-secondary;
 
         @media all and (max-width: $screen-sm-width) {

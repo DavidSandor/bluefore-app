@@ -53,9 +53,9 @@ export default {
     },
     convertWindSpeed(speed) {
         if(store.getters.units === 'metric') {
-            return `${Math.round(speed * 3.6)} km/h`;
+            return Math.round(speed * 3.6);
         } else {
-            return `${Math.round(speed)} mi/h`;
+            return Math.round(speed);
         }
     }
 }

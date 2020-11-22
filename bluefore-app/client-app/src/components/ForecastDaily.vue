@@ -10,8 +10,9 @@
             <div class="dw-temperature-bottom">
                 <hr>
                 <div class="dw-rain-wind">                    
-                    <p v-if="forecast.rainVolume"><img src="../assets/icons/drops.svg" />{{forecast.rainVolume.toFixed(1)}} mm</p>
-                    <p v-if="forecast.windSpeed"><img src="../assets/icons/wind.svg" />{{toWindSpeed(forecast.windSpeed)}}</p>
+                    <p v-if="forecast.rainVolume && forecast.rainVolume > forecast.snowVolume"><img src="../assets/icons/drops.svg" />{{forecast.rainVolume.toFixed(1)}}<span class="unit"> mm</span></p>
+                    <p v-if="forecast.snowVolume && forecast.rainVolume < forecast.snowVolume"><img src="../assets/icons/snowflake.svg" />{{forecast.snowVolume.toFixed(1)}}<span class="unit"> mm</span></p>
+                    <p v-if="forecast.windSpeed"><img src="../assets/icons/wind.svg" />{{toWindSpeed(forecast.windSpeed)}}<span class="unit">{{units === 'metric' ? ' km/h' : ' mi/h' }}</span></p>
                 </div>
                 <div class="dw-temperature-meters">
                     <div class="inner-meter" :style="{height: `${getTemperatureMeterValue(forecast.temperature.max)}%`}">
@@ -44,7 +45,8 @@ export default {
     ...mapGetters([
         'forecastDaily',
         'currentWeather',
-        'language'
+        'language',
+        'units'
         ]),
     },
     created() {

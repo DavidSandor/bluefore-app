@@ -10,6 +10,7 @@ class ForecastDaily {
     timezoneOffset;
     rainVolume;
     windSpeed;
+    snowVolume;
 
     constructor(forecastWeatherData, timezoneOffset) {
         this.dateTime = forecastWeatherData.dt * 1000;
@@ -20,7 +21,8 @@ class ForecastDaily {
         this.iconId = forecastWeatherData.weather[0].icon;
         this.weatherConditionId = forecastWeatherData.weather[0].id;
         this.description = forecastWeatherData.weather[0].description;
-        this.rainVolume = forecastWeatherData.rain;
+        this.rainVolume = forecastWeatherData.rain ? forecastWeatherData.rain : 0;
+        this.snowVolume = forecastWeatherData.snow ? forecastWeatherData.snow : 0;
         this.windSpeed = forecastWeatherData.wind_speed;
     }
 }

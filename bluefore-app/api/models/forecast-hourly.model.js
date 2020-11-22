@@ -7,6 +7,7 @@ class ForecastHourly {
     description;
     timezoneOffset;
     precipitationProbability;
+    snowVolume;
 
     constructor(forecastWeatherData, timezoneOffset) {
         this.dateTime = forecastWeatherData.dt * 1000;
@@ -16,6 +17,12 @@ class ForecastHourly {
         this.weatherConditionId = forecastWeatherData.weather[0].id;
         this.description = forecastWeatherData.weather[0].description;
         this.precipitationProbability = forecastWeatherData.pop;
+
+        if(forecastWeatherData.snow) {
+            this.snowVolume = forecastWeatherData.snow['1h'] ? forecastWeatherData.snow['1h'] : 0;
+        } else {
+            this.snowVolume = 0;
+        }
     }
 }
 
