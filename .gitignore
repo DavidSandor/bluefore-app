@@ -3,6 +3,7 @@ node_modules
 dist
 spa
 .env
+Procfile
 
 # local env files
 .env.local
