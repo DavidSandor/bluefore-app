@@ -36,8 +36,8 @@ router.get('/api/cities/:name', (req, res) => {
         ...includeMatches
     ]
 
-    // send only first 10 relevant search results
-    foundCities = foundCities.filter((c, index) => index < 10);
+    // send only first 8 relevant search results
+    foundCities = foundCities.filter((c, index) => index < 8);
 
     res.json(foundCities.map(city => new City(city)));
 });

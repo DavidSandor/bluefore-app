@@ -1,6 +1,7 @@
 class CurrentWeather {
 
     location;
+    locationId;
     iconId;
     weatherConditionId;
     description;
@@ -19,6 +20,7 @@ class CurrentWeather {
 
     constructor(currentWeatherData) {
         this.location = currentWeatherData.name;
+        this.locationId = currentWeatherData.id;
         this.iconId = currentWeatherData.weather[0].icon;
         this.weatherConditionId = currentWeatherData.weather[0].id;
         this.description = currentWeatherData.weather[0].description;
