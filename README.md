@@ -4,6 +4,8 @@
 In the /api folder create a .env file with the following environment variables:
  - WEATHER_API_KEY (register on OpenWeatherMaps and get your own api key)
 
+In the /api folder include a gzip minimized json file named: "city.list.min.json.gz" with the city list from the world if you would like to offer search results for cities/locations.
+
 ## Project setup
 ```
 npm run setup
