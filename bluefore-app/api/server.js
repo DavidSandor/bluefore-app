@@ -4,6 +4,7 @@ const environment = require('./utility/environment');
 const path = require('path');
 const currentWeatherRoutes = require('./routes/current-weather');
 const forecastWeatherRoutes = require('./routes/forecast-weather');
+const citiesRoutes = require('./routes/cities');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(helmet());
 
 app.use(currentWeatherRoutes);
 app.use(forecastWeatherRoutes);
+app.use(citiesRoutes);
 
 app.use(express.static(path.join(__dirname, './spa')));
 
