@@ -4,7 +4,7 @@
 In the /api folder create a .env file with the following environment variables:
  - WEATHER_API_KEY (register on OpenWeatherMaps and get your own api key)
 
-In the /api folder include a gzip minimized json file named: "city.list.min.json.gz" with the city list from the world if you would like to offer search results for cities/locations.
+In the /api folder include a gzip minimized json file named: "city.list.min.json.gz" with the city list from the world in order to offer search results for cities/locations. You should be able to download the mentioned file [here](http://bulk.openweathermap.org/sample/).
 
 ## Project setup
 ```
