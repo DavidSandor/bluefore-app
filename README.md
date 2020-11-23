@@ -1,10 +1,14 @@
 # Bluefore fullstack application
 
-## Project prerequisites
-In the /api folder create a .env file with the following environment variables:
- - WEATHER_API_KEY (register on OpenWeatherMaps and get your own api key)
+## Project description
+This simple weather tracking application is developed with Vue.js + Node.js technologies.
+The weather service api which is used: [OpenWeather](https://openweathermap.org/).
 
-In the /api folder include a gzip minimized json file named: "city.list.min.json.gz" with the city list from the world in order to offer search results for cities/locations. You should be able to download the mentioned file [here](http://bulk.openweathermap.org/sample/).
+## Project prerequisites
+1. In the /api folder create a .env file with the following environment variables:
+ - WEATHER_API_KEY (register on OpenWeather and get your own api key)
+
+2. In the /api folder include a gzip minimized json file named: "city.list.min.json.gz" with the city list from the world in order to offer search results for cities/locations. You should be able to download the mentioned file from [here](http://bulk.openweathermap.org/sample/).
 
 ## Project setup
 ```

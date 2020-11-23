@@ -7,8 +7,10 @@
                 :placeholder="TRANSLATE('search_location', language)" 
                 @keyup.enter="locationChangeHandler($event)" 
                 :class="{ error: responseError?.status === 404 }"
-                @input="locationInputHandler($event, this)">
-        <div id="city-search" v-if="foundCities.length">
+                @input="locationInputHandler($event, this)"
+                @focus="locInputFocused = true"
+                @blur="blurDelayHandler(false)">
+        <div id="city-search" v-if="foundCities.length && locInputFocused">
           <p v-for="city in foundCities" :key="city.id" @click="foundCityClickHandler(city)">{{city.name}} <span>({{city.country}}{{city.state ? ` / ${city.state}` : ''}})</span></p>
         </div>
         <button class="search" @click="locationChangeHandler($event)">
@@ -82,7 +84,8 @@ export default {
       sunset: '',
       chosenLocation: '',
       responseErrorMessage: '',
-      foundCities: []
+      foundCities: [],
+      locInputFocused: false
     }
   },
   created() {
@@ -242,6 +245,11 @@ export default {
     foundCityClickHandler(city) {
       this.requestUpdateByLocationId(city.id);
     },
+    blurDelayHandler(isFocused) {
+      setTimeout(() => {
+        this.locInputFocused = isFocused;
+      }, 100);
+    },
     TRANSLATE(word, language) {
       if(word && language) {
         return LANGUAGE_HELPER(word, language);
@@ -280,7 +288,6 @@ export default {
   input[type=text] {
     min-width: 0;
     border: none;
-    height: 34px;
     padding-left: $space-secondary;
     border-radius: $radius-full;
     margin-right: -34px;
