@@ -244,6 +244,7 @@ export default {
       }, 500),
     foundCityClickHandler(city) {
       this.requestUpdateByLocationId(city.id);
+      $('html, body').animate({scrollTop: 0}, 500);
     },
     blurDelayHandler(isFocused) {
       setTimeout(() => {
