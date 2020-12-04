@@ -16,7 +16,7 @@ app.use(helmet());
 app.set('trust proxy', 1);
 
 const apiLimiter = rateLimit({
-    windowMs: 60 * 60 * 1000, // 60 minutes
+    windowMs: 1 * 60 * 1000, // 1 minute
     max: 60 // max 60 requests
 });
 
