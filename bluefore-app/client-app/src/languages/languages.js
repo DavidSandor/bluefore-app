@@ -75,6 +75,10 @@ const languages = {
         en: 'Sorry something went wrong during requesting weather data! Do not forget to check your internet connection!',
         hu: 'Hiba történt az időjárás adatok lekérése közben! Kérlek ellenőrizd az internetkapcsolatod!'
     },
+    too_many_requests: {
+        en: 'Sorry you have reached the maximum number of requests in a minute (60 requests), please try again later!',
+        hu: 'Sajnos túllépted a megengedett lekérések számát egy perc alatt (60 lekérés), kérlek próbálkozz kicsit később!'
+    },
     page_creator: {
         en: 'Handcrafted with care by David Sandor.',
         hu: 'Az oldal alkotója Sándor Dávid.'

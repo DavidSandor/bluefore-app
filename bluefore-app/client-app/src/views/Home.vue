@@ -139,6 +139,9 @@ export default {
           case 404:
             this.responseErrorMessage = 'location_not_found';
             break;
+          case 429:
+            this.responseErrorMessage = 'too_many_requests';
+            break;
           default:
             this.responseErrorMessage = 'request_error';
             break;
