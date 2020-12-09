@@ -63,6 +63,14 @@ const languages = {
         en: 'Please allow location access in your browser if you would like to follow weather info at your location!',
         hu: 'Kérlek engedélyezd a lokáció hozzáférést a böngésződben ha követnéd az időjárást a saját lokációdon is!'
     },
+    weather_expired: {
+        en: 'You are watching outdated weather info, please refresh the page!',
+        hu: 'Nem a legfrissebb időjárás adatokat nézed, kérlek frissítsd az oldalt!'
+    },
+    refresh_page: {
+        en: 'refresh',
+        hu: 'frissítés'
+    },
     follow: {
         en: 'follow',
         hu: 'követem'

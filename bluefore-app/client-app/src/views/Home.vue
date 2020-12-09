@@ -31,6 +31,11 @@
         </template>
       </div>
 
+      <div v-if="isWeatherExpired" id="weather-expired">
+        <p>{{TRANSLATE('weather_expired', language)}}</p>
+        <button @click="initPage()">{{TRANSLATE('refresh_page', language)}}</button>
+      </div>
+
       <template v-if="!responseError">
         <div id="date-time-panel">
           <p class="mobile-hide">{{TRANSLATE(localDay, language)}}</p>
@@ -85,23 +90,12 @@ export default {
       chosenLocation: '',
       responseErrorMessage: '',
       foundCities: [],
-      locInputFocused: false
+      locInputFocused: false,
+      isWeatherExpired: false
     }
   },
   created() {
-    const routeLocation = this.$route.params.location;
-    const routeLocationId = this.$route.params.id;
-
-    GEOLOCATION.checkGeolocation();
-
-    if(routeLocationId && routeLocation) {
-      this.requestUpdateByLocationId(routeLocationId);
-    }
-    else if(routeLocationId) {
-      this.requestUpdateByLocation(routeLocationId);
-    } else {
-      GEOLOCATION.updateLocation();
-    }
+    this.initPage();
   },
   watch: {
     currentWeather() {
@@ -164,6 +158,23 @@ export default {
     ...mapMutations([
         'setIsCurrentLocation'
         ]),
+    initPage() {
+      this.isWeatherExpired = false;
+
+      const routeLocation = this.$route.params.location;
+      const routeLocationId = this.$route.params.id;
+
+      GEOLOCATION.checkGeolocation();
+
+      if(routeLocationId && routeLocation) {
+        this.requestUpdateByLocationId(routeLocationId);
+      }
+      else if(routeLocationId) {
+        this.requestUpdateByLocation(routeLocationId);
+      } else {
+        GEOLOCATION.updateLocation();
+      }
+    },
     requestUpdateByLocation(location) {
       REQUESTS.updateWeatherData({location}).then(() => {
         if(!this.responseError) {
@@ -212,8 +223,16 @@ export default {
 
             setLocalDateTime();
 
+            let expireTime = 0;
+
             this.timerInterval = setInterval(() => {
                 setLocalDateTime();
+
+                expireTime++;
+
+                // weather info expires after 30 minutes
+                this.isWeatherExpired = expireTime > 1800;
+
             }, 1000);
         }
     },
@@ -389,17 +408,17 @@ export default {
   }
 }
 
-#geolocation-disabled {
+@mixin warning-message($color) {
   margin: 0 auto;
   margin-bottom: $space-primary;
   text-align: center;
-  background-color: lighten($color-primary, 30);
+  background-color: lighten($color, 30);
   border-radius: $radius-primary;
   padding: 10px;
 
   @media all and (max-width: $screen-sm-width) {
     margin-bottom: 0;
-    margin-top: 70px;
+    margin-top: $space-secondary;
   }
 
   p {
@@ -421,8 +440,16 @@ export default {
     border-radius: $radius-full;
     box-shadow: $shadow-container;
     color: white;
-    background-color: $color-primary;
+    background-color: $color;
   }
+}
+
+#geolocation-disabled {
+  @include warning-message($color-primary);
+}
+
+#weather-expired {
+  @include warning-message($color-secondary);
 }
 
 #home-panel {
@@ -433,7 +460,7 @@ export default {
   position: relative;
 
   @media all and (max-width: $screen-sm-width) {
-    padding-top: 0;
+    padding-top: 1px;
   }
 
   #date-time-panel {
