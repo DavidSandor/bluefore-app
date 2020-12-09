@@ -230,8 +230,8 @@ export default {
 
                 expireTime++;
 
-                // weather info expires after 30 minutes
-                this.isWeatherExpired = expireTime > 1800;
+                // weather info expires after 15 minutes
+                this.isWeatherExpired = expireTime > 900;
 
             }, 1000);
         }
