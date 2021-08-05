@@ -1,5 +1,6 @@
 # Bluefore fullstack application
 
+The application is hosted on heroku [here](https://bluefore-app.herokuapp.com/)
 ## Project description
 This simple weather tracking application is developed with Vue.js + Node.js technologies.
 The weather service api which is used: [OpenWeather](https://openweathermap.org/).
